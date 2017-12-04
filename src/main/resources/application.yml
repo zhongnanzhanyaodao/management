@@ -1,0 +1,9 @@
+server:
+  display-name: management
+  port: 80
+  contextPath: /management
+
+#忽略权限拦截
+security:
+  basic:
+    enabled: false
