@@ -66,7 +66,7 @@ running() {
 }
 
 start_app() {
-  echo "starting $APP_NAME"
+  echo "starting $APP_NAME ..."
   echo "$START_CMD"
   #nohup命令可以在你退出之后继续运行相应的进程
   #想让某个程序在后台运行，于是我们将常会用 & 在程序结尾来让程序自动运行
@@ -75,7 +75,7 @@ start_app() {
   #$!后台运行的最后一个进程的ID号
   #if后跟0或者非0，条件命令执行成功显示0,执行失败显示非0，条件命令执行状态可用$?查看
   if ! $(running $!) ; then
-    echo "failed to start $APP_NAME"
+    echo "failed to start $APP_NAME ..."
     exit 1
   fi
   PID=$!
@@ -88,7 +88,7 @@ stop_app() {
   if ! $(running $PID) ; then
     return
   fi
-  echo "stopping $PID of $APP_NAME..."
+  echo "stopping $PID of $APP_NAME ..."
   $STOP_CMD
   while $(running $PID) ; do
     sleep 1
