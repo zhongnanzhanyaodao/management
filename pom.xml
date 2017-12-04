@@ -199,12 +199,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://10.178.189.101:8081/nexus/content/repositories/releases/</url>
+            <url>http://ip:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>nexus distribution snapshot repository</name>
-            <url>http://10.178.189.101:8081/nexus/content/repositories/snapshots/</url>
+            <url>http://ip:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>-->
 
