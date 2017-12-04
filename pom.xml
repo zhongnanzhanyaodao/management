@@ -195,17 +195,17 @@
 
 
     <!-- 配置部署的远程仓库 -->
-<!--    <distributionManagement>
+    <distributionManagement>
         <repository>
-            <id>nexus-releases</id>
+            <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://ip:8081/nexus/content/repositories/releases/</url>
+            <url>http://39.108.209.178:8081/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>nexus distribution snapshot repository</name>
-            <url>http://ip:8081/nexus/content/repositories/snapshots/</url>
+            <id>snapshots</id>
+            <name>nexus snapshot repository</name>
+            <url>http://39.108.209.178:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
-    </distributionManagement>-->
+    </distributionManagement>
 
 </project>
