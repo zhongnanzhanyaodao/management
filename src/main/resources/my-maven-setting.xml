@@ -116,6 +116,7 @@ under the License.
          | NOTE: You should either specify username/password OR privateKey/passphrase, since these pairings are
          |       used together.
          | -->
+        <!--server的id与distributionManagement中repository元素的id相匹配。-->
         <server>
             <id>releases</id>
             <username>admin</username>
@@ -223,6 +224,7 @@ under the License.
             <id>profile-nexus</id>
             <repositories>
                 <repository>
+                    <!--repository的id与私服中的库的GroupID相匹配。-->
                     <id>releases</id>
                     <url>http://39.108.209.178:8081/nexus/content/repositories/releases</url>
                     <releases>
