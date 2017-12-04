@@ -158,6 +158,7 @@ under the License.
         <mirror>
             <id>nexus-mirror</id>
             <mirrorOf>*</mirrorOf>
+            <!--public为Repository Group-->
             <url>http://39.108.209.178:8081/nexus/content/groups/public</url>
         </mirror>
         <mirror>
