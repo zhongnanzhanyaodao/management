@@ -1,0 +1,5 @@
+#lsb_release安装
+yum install redhat-lsb
+#查看linux系统版本信息
+lsb_release -a
+==============================================

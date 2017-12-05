@@ -1,1 +1,2 @@
-# management 1
+# linux centos7.3
+# management
