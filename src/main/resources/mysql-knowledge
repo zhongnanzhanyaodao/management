@@ -1,3 +1,7 @@
+#查看系统中是否已安装 MySQL 服务：
+yum list installed | grep mysql
+#如果已安装则删除 MySQL 及其依赖的包：
+yum -y remove mysql-libs.x86_64
 #下载 mysql57-community-release-el7-8.noarch.rpm 的 YUM 源：
 wget http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm
 #安装 mysql57-community-release-el7-8.noarch.rpm：
@@ -18,12 +22,44 @@ vi /etc/fstab
 //在其中添加如下一行
 /swap swap swap defaults 0 0
 =======================================================================
-cd  /var/lib/mysql
-rm -rf *
+cd  /var/lib
+rm -rf mysql
 mysql_install_db --user=mysql --datadir=/var/lib/mysql
 =======================================================================
+#查看mysql安装目录
+rpm -qa |grep mysql  //查看安装了哪些mysql包
+rpm -ql mysql-community-server-5.7.20-1.el7.x86_64 //查看mysql包路径
+======================================================================
+1.查看当前密码：
+cat /root/.mysql_secret
+2.登陆,提示密码时输入上条命令cat出来的密码
+mysql -u root -p
+3.修改root密码
+update mysql.user set authentication_string=password('新密码') where user='root';
+4.写入内存生效
+flush privileges;
+5.退出
+quit
+======================================================================
+#设置用户 root 可以在任意 IP 下被访问：
+#grant all privileges on 库名.表名 to '用户名'@'IP地址' identified by '密码'
+库名:要远程访问的数据库名称,所有的数据库使用“*”
+表名:要远程访问的数据库下的表的名称，所有的表使用“*”
+用户名:要赋给远程访问权限的用户名称
+IP地址:可以远程访问的电脑的IP地址，所有的地址使用“%”
+grant all privileges on *.* to root@"%" identified by "新密码";
+flush privileges;
+======================================================================
+#设置MySQL的字符集为UTF-8
+修改/etc/my.cnf
+在 [mysqld] 后添加如下代码：
+character_set_server=utf8
+#查看字符集：
+show variables like '%character%';
+======================================================================
+#mysql命令
 service mysqld start
 service mysqld stop
 service mysqld restart
-
-http://www.linuxidc.com/Linux/2016-06/132676.htm
+service mysqld status
+======================================================================
