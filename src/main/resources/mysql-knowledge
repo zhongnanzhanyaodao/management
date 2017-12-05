@@ -1,0 +1,29 @@
+#下载 mysql57-community-release-el7-8.noarch.rpm 的 YUM 源：
+wget http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm
+#安装 mysql57-community-release-el7-8.noarch.rpm：
+rpm -ivh mysql57-community-release-el7-8.noarch.rpm
+#安装 MySQL：
+yum -y install mysql-server
+=======================================================================
+vim /etc/my.cnf
+//在其中添加如下一行
+innodb_buffer_pool_size=8M
+=======================================================================
+dd if=/dev/zero of=/swap bs=1M count=128  //创建一个swap文件，大小为128M
+mkswap /swap                              //将swap文件变为swap分区文件
+swapon /swap                              //将其映射为swap分区
+=======================================================================
+//为了保证下次系统启动后，此swap分区被自动加载，需要修改系统的fstab文件
+vi /etc/fstab
+//在其中添加如下一行
+/swap swap swap defaults 0 0
+=======================================================================
+cd  /var/lib/mysql
+rm -rf *
+mysql_install_db --user=mysql --datadir=/var/lib/mysql
+=======================================================================
+service mysqld start
+service mysqld stop
+service mysqld restart
+
+http://www.linuxidc.com/Linux/2016-06/132676.htm
