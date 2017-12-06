@@ -9,12 +9,13 @@ import org.springframework.context.annotation.Configuration;
  * MyBatis扫描接口
  */
 @Configuration
-//在MyBatisConfig后执行
+//在MybatisConfig后执行
 @AutoConfigureAfter(MybatisBaseConfig.class)
 public class MybatisMapperScannerConfig {
 
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
+
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         //mapper接口目录
