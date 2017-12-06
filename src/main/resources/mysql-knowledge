@@ -63,3 +63,20 @@ service mysqld stop
 service mysqld restart
 service mysqld status
 ======================================================================
+CREATE DATABASE management;
+CREATE TABLE `management_system_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `name` varchar(200) COLLATE utf8mb4_bin NOT NULL COMMENT '姓名',
+  `password` varchar(200) COLLATE utf8mb4_bin NOT NULL COMMENT '密码',
+  `age` tinyint(4) unsigned DEFAULT NULL COMMENT '年龄',
+  `sex` tinyint(1) unsigned DEFAULT NULL COMMENT '性别(0-男 1-女)',
+  `mobile` varchar(20) COLLATE utf8mb4_bin NOT NULL COMMENT '手机号码',
+  `birthday` date DEFAULT NULL COMMENT '生日',
+  `address` varchar(200) COLLATE utf8mb4_bin NOT NULL COMMENT '地址',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_mobile` (`mobile`),
+  KEY `idx_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统用户表';
+======================================================================
