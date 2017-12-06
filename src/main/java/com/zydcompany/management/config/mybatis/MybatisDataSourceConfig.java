@@ -1,6 +1,7 @@
 package com.zydcompany.management.config.mybatis;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.google.common.base.Strings;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,10 +36,10 @@ public class MybatisDataSourceConfig {
         dataSource.setUrl(url);
         dataSource.setUsername(userName);
         dataSource.setPassword(password);
-        dataSource.setInitialSize(initialSize == null ? 2 : Integer.parseInt(initialSize));
-        dataSource.setMinIdle(minIdle == null ? 2 : Integer.parseInt(minIdle));
-        dataSource.setMaxActive(maxActive == null ? 20 : Integer.parseInt(maxActive));
-        dataSource.setMaxWait(maxWaitMillis == null ? 60000L : Long.parseLong(maxWaitMillis));
+        dataSource.setInitialSize(Strings.isNullOrEmpty(initialSize) ? 2 : Integer.parseInt(initialSize));
+        dataSource.setMinIdle(Strings.isNullOrEmpty(minIdle) ? 2 : Integer.parseInt(minIdle));
+        dataSource.setMaxActive(Strings.isNullOrEmpty(maxActive) ? 20 : Integer.parseInt(maxActive));
+        dataSource.setMaxWait(Strings.isNullOrEmpty(maxWaitMillis) ? 60000L : Long.parseLong(maxWaitMillis));
         return dataSource;
     }
 
