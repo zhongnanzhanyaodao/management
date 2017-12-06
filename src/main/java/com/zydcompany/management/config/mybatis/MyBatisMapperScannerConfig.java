@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * MyBatis扫描接口
+ * Mybatis扫描接口
  */
 @Configuration
 //在MybatisConfig后执行
