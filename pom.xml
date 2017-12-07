@@ -6,6 +6,7 @@
 
     <groupId>com.zydcompany.practice</groupId>
     <artifactId>management</artifactId>
+    <!--如果想发布到snapshot仓库中，则需要在版本号后加上-SNAPSHOT(注意这里必须是大写)-->
     <version>1.0</version>
 
     <packaging>jar</packaging>
