@@ -32,7 +32,9 @@ public class TestAction {
 
     @RequestMapping("/testJson")
     public PlatformResponse testJson(@RequestBody TestDto jsonData) {
-
+        if(true){
+            throw new RuntimeException("testJsonException");
+        }
         return PlatformResponse.builder().data(jsonData).build();
     }
 
