@@ -24,7 +24,7 @@ public class BusinessException extends RuntimeException {
     }
 
     public static BusinessException createBusinessException(String msg) {
-        String callChainStr = ManagementLogUtil.generatorPrixMsg();
+        String callChainStr = log.generatorPrixMsg();
         log.error("{} businessException code={} msg={}", callChainStr, BaseExceptionMsg.PRECONDITIONS_FAIL_CODE, msg);
         BusinessException businessException = new BusinessException(BaseExceptionMsg.PRECONDITIONS_FAIL_CODE, msg);
         return businessException;
