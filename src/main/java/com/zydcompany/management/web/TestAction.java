@@ -1,6 +1,7 @@
 package com.zydcompany.management.web;
 
 import com.zydcompany.management.domain.model.SystemUserDo;
+import com.zydcompany.management.exception.BusinessException;
 import com.zydcompany.management.service.SystemUserService;
 import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
@@ -34,5 +35,21 @@ public class TestAction {
         SystemUserDo systemUserDo = systemUserService.getSystemUserDoById(BigInteger.valueOf(1));
         log.info(FastJSONHelper.serialize(systemUserDo));
         return environment + FastJSONHelper.serialize(systemUserDo);
+    }
+
+    @RequestMapping("/testBaseException")
+    public String testBaseException(String input) {
+        if (true) {
+            throw new RuntimeException("testBaseException");
+        }
+        return "testBaseException！";
+    }
+
+    @RequestMapping("/testBusinessException")
+    public String testBusinessException(String input) {
+        if (true) {
+            throw BusinessException.createBusinessException("testException");
+        }
+        return "testBusinessException！";
     }
 }

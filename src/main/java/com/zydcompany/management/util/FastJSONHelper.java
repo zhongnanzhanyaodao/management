@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.zydcompany.management.common.constant.NumberConstant;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -63,13 +64,13 @@ public class FastJSONHelper {
                 filter = new SimplePropertyPreFilter(object.getClass(), fieldNames);
             } else {
                 String[] fieldDestNames = {};
-                if (fieldNames != null && fieldNames.length > 0) {
+                if (fieldNames != null && fieldNames.length > NumberConstant.ZERO) {
                     Class cls = object.getClass();
                     Field[] fields = cls.getDeclaredFields();
                     fieldDestNames = new String[fields.length];
-                    for (int i = 0; i < fields.length; i++) {
+                    for (int i = NumberConstant.ZERO; i < fields.length; i++) {
                         boolean flag = true;
-                        for (int j = 0; j < fieldNames.length; j++) {
+                        for (int j = NumberConstant.ZERO; j < fieldNames.length; j++) {
                             if (fieldNames[j].equals(fields[i].getName())) {
                                 flag = false;
                                 break;

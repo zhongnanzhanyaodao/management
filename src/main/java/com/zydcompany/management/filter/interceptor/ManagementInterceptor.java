@@ -1,5 +1,6 @@
-package com.zydcompany.management.filter;
+package com.zydcompany.management.filter.interceptor;
 
+import com.zydcompany.management.common.constant.SymbolConstant;
 import com.zydcompany.management.util.ThreadLocalUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class ManagementInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString() + SymbolConstant.UNDERLINE + System.currentTimeMillis();
         ThreadLocalUtil.setTraceId(uuid);
         return true;
     }
