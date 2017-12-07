@@ -4,8 +4,8 @@ import com.zydcompany.management.exception.message.BaseExceptionMsg;
 
 public class PlatformResponse {
 
-    private Integer code = BaseExceptionMsg.SUCCESS_CODE;
-    private String msg = BaseExceptionMsg.SUCCESS_MSG;
+    private Integer code;
+    private String msg;
     private Object data;
 
     private PlatformResponse() {
@@ -38,8 +38,8 @@ public class PlatformResponse {
     }
 
     public static class Builder {
-        private Integer code;
-        private String msg;
+        private Integer code = BaseExceptionMsg.SUCCESS_CODE;
+        private String msg = BaseExceptionMsg.SUCCESS_MSG;
         private Object data;
 
         public Builder code(Integer code) {

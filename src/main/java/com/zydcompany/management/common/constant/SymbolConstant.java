@@ -11,4 +11,7 @@ public class SymbolConstant {
     public static final String RIGHT_BRACKET = ")";
     public static final String HORIZONTAL_TRUNK = "-";
     public static final String COLON = ":";
+    public static final String EQUALITY_SIGN = "=";
+    public static final String INPUT_FLAG = "input";
+    public static final String OUTPUT_FLAG = "output";
 }
