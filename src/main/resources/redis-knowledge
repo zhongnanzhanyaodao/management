@@ -1,0 +1,23 @@
+#创建redis文件夹用于存放下载的redis文件
+cd /usr/local
+mkdir redis
+cd redis
+#安装
+wget http://download.redis.io/releases/redis-3.2.1.tar.gz
+tar -xzvf  redis-3.2.1.tar.gz
+cd redis-3.2.1
+make
+=====================================================
+#修改redis配置
+cd /usr/local/redis/redis-3.2.1
+vim redis.conf
+#关闭保护模式(如果protected-mode为yes,则要么bing ip,要么配置redis密码requirepass)
+修改为: protected-mode no
+#如果需要在后台运行，把daemonize改为yes
+daemonize yes
+#bind 绑定ip，设置后只接受来自该ip的请求
+#bind 127.0.0.1 (注释该行允许其它ip访问redis)
+======================================================
+#启动:目录/usr/local/redis/redis-3.2.1/src/redis-server
+cd src
+./redis-server ../redis.conf

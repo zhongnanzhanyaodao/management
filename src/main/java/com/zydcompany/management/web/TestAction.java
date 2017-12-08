@@ -1,6 +1,7 @@
 package com.zydcompany.management.web;
 
 import com.zydcompany.management.common.PlatformResponse;
+import com.zydcompany.management.config.redis.RedisServerFactory;
 import com.zydcompany.management.domain.dto.TestDto;
 import com.zydcompany.management.domain.model.SystemUserDo;
 import com.zydcompany.management.exception.BusinessException;
@@ -30,6 +31,8 @@ public class TestAction {
     @RequestMapping("/test")
     public PlatformResponse test(String input) {
         log.info(input);
+        RedisServerFactory.getRedisServer().setString("zhazha", "you");
+        log.info(RedisServerFactory.getRedisServer().get("zhazha"));
         return PlatformResponse.builder().data(MSG).build();
     }
 

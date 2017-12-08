@@ -1,7 +1,6 @@
 package com.zydcompany.management.config.mybatis;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.google.common.base.Strings;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,17 +28,41 @@ public class MybatisDataSourceConfig {
         String maxIdle = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.maxIdle");
         //连接池的最大值,同一时间可以从池分配的最多连接数量
         String maxActive = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.maxActive");
-        //获取连接时最大等待时间，单位毫秒
+        //获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁。
         String maxWaitMillis = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.maxWaitMillis");
+        String useUnfairLock = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.useUnfairLock");
+        //申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+        String testOnBorrow = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.testOnBorrow");
+        //归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+        String testOnReturn = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.testOnReturn");
+        //建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+        String testWhileIdle = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.testWhileIdle");
+        /*有两个含义：
+        1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。
+        2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明*/
+        String timeBetweenEvictionRunsMillis = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.timeBetweenEvictionRunsMillis");
+        //连接保持空闲而不被驱逐的最小时间
+        String minEvictableIdleTimeMillis = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.minEvictableIdleTimeMillis");
+        //用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
+        String validationQuery = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.validationQuery");
+
         final DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(userName);
         dataSource.setPassword(password);
-        dataSource.setInitialSize(Strings.isNullOrEmpty(initialSize) ? 2 : Integer.parseInt(initialSize));
-        dataSource.setMinIdle(Strings.isNullOrEmpty(minIdle) ? 2 : Integer.parseInt(minIdle));
-        dataSource.setMaxActive(Strings.isNullOrEmpty(maxActive) ? 20 : Integer.parseInt(maxActive));
-        dataSource.setMaxWait(Strings.isNullOrEmpty(maxWaitMillis) ? 60000L : Long.parseLong(maxWaitMillis));
+        dataSource.setInitialSize(Integer.parseInt(initialSize));
+        dataSource.setMinIdle(Integer.parseInt(minIdle));
+        dataSource.setMaxActive(Integer.parseInt(maxActive));
+        dataSource.setMaxWait(Long.parseLong(maxWaitMillis));
+        dataSource.setUseUnfairLock(Boolean.parseBoolean(useUnfairLock));
+        dataSource.setTestOnBorrow(Boolean.parseBoolean(testOnBorrow));
+        dataSource.setTestOnReturn(Boolean.parseBoolean(testOnReturn));
+        dataSource.setTestWhileIdle(Boolean.parseBoolean(testWhileIdle));
+        dataSource.setTimeBetweenEvictionRunsMillis(Long.parseLong(timeBetweenEvictionRunsMillis));
+        dataSource.setMinEvictableIdleTimeMillis(Long.parseLong(minEvictableIdleTimeMillis));
+        dataSource.setValidationQuery(validationQuery);
+
         return dataSource;
     }
 
