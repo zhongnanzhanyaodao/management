@@ -1,0 +1,2 @@
+#修改git提交者名称
+git config --global user.name "zhongnanzhanyaodao"

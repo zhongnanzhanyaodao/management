@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 
+/**
+ * 请求入参统一为json格式，否则不能打印入参信息
+ */
 @RestController
 public class TestAction {
 
@@ -32,7 +35,7 @@ public class TestAction {
 
     @RequestMapping("/testJson")
     public PlatformResponse testJson(@RequestBody TestDto jsonData) {
-        if(true){
+        if (false) {
             throw new RuntimeException("testJsonException");
         }
         return PlatformResponse.builder().data(jsonData).build();
