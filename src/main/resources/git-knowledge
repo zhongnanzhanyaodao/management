@@ -1,2 +1,6 @@
+#查看git配置
+git config --list
 #修改git提交者名称
 git config --global user.name "zhongnanzhanyaodao"
+#修改git提交者邮箱
+git config --global user.email "262548405@qq.com"
