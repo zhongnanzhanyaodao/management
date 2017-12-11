@@ -41,14 +41,14 @@ public class ZKDistributeLock implements DistributeLock {
             if (!Boolean.valueOf(ManagementPropertiesUtil.getManagementBasicPropertiesValue("zookeeper.open.distribute.lock")))
                 return Boolean.TRUE;
             CuratorFramework zkClient = zkOpt.getZkClient();
-            //如果zk 客户端获取为null 则直接返回 拿到锁
-            if (Objects.isNull(zkClient)) return Boolean.TRUE;
+            //如果zk 客户端获取为null 则直接返回 没拿到锁
+            if (Objects.isNull(zkClient)) return Boolean.FALSE;
             lock = new InterProcessMutex(zkClient, ROOT + key);
             return lock.acquire(timeoutMS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             log.error("ZKDistributeLock lock key={} timeoutMS={} Exception", key, timeoutMS, e);
         }
-        return false;
+        return Boolean.FALSE;
     }
 
     /**

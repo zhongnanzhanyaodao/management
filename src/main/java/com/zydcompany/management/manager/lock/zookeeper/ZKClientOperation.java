@@ -39,7 +39,8 @@ public class ZKClientOperation {
                     .connectionTimeoutMs(CONNECTION_TIME_OUT_MS)
                     .sessionTimeoutMs(SESSION_TIME_OUT_MS)
                     .build();
-            zkClient.getConnectionStateListenable().addListener(new ConnectionStateListener() {
+           /* zkClient.getConnectionStateListenable().addListener(new ConnectionStateListener() {
+                @Override
                 public void stateChanged(CuratorFramework client, ConnectionState state) {
                     if (state == ConnectionState.LOST) {
                         log.error("ZKClientOperation zkClient lost with zookeeper");
@@ -47,9 +48,13 @@ public class ZKClientOperation {
                         log.info("ZKClientOperation zkClient connected with zookeeper");
                     } else if (state == ConnectionState.RECONNECTED) {
                         log.info("ZKClientOperation zkClient reconnected with zookeeper");
+                    } else if (state == ConnectionState.SUSPENDED) {
+                        log.error("ZKClientOperation zkClient suspended with zookeeper");
+                    } else if (state == ConnectionState.READ_ONLY) {
+                        log.error("ZKClientOperation zkClient read-only with zookeeper");
                     }
                 }
-            });
+            });*/
             zkClient.start();
             log.info("ZKClientOperation init success ...");
         } catch (Exception e) {
@@ -58,20 +63,17 @@ public class ZKClientOperation {
     }
 
     /**
-     * 获取客户端，如果状态为停止，则重新启动
+     * 获取客户端
      *
      * @return
      */
     public CuratorFramework getZkClient() {
         try {
-            CuratorFrameworkState state = zkClient.getState();
-            if(!zkClient.getZookeeperClient().isConnected()){
-                return null;
+            if (zkClient.getZookeeperClient().isConnected()) {
+                return zkClient;
             }
-            if (state == CuratorFrameworkState.LATENT || state == CuratorFrameworkState.STOPPED) zkClient.start();
-            return zkClient;
         } catch (Exception e) {
-            log.error("ZKClientUtils zkClient Exception", e);
+            log.error("ZKClientUtils getZkClient Exception", e);
         }
         return null;
     }
