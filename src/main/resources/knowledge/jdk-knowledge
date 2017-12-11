@@ -1,0 +1,14 @@
+yum install java-1.8.0-openjdk-devel.x86_64
+================================================================
+vim /etc/profile
+export JAVA_HOME=/usr/lib/jvm/java
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin
+================================================================
+java -version
+java
+javac
+================================================================
+#查看jdk安装路径 /usr/lib/jvm/java
+rpm -qa |grep java
+rpm -ql java-1.8.0-openjdk-devel-1.8.0.151-1.b12.el7_4.x86_64

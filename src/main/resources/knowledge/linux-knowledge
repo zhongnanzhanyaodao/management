@@ -1,5 +1,25 @@
+# linux centos7.3
 #lsb_release安装
 yum install redhat-lsb
 #查看linux系统版本信息
 lsb_release -a
+==============================================
+#安装rz和sz命令
+yum -y install lrzsz
+==============================================
+#find命令使用
+find  / -name locale.conf
+==============================================
+#查看当前系统默认采用的字符集
+locale
+#安装字体，支持中文
+yum groupinstall fonts
+#修改系统默认采用的字符集
+vim /etc/locale.conf
+LANG=zh_CN.UTF-8
+#使修改立即生效
+source locale.conf
+==============================================
+#查看端口占用
+netstat -apn |grep 3306
 ==============================================

@@ -1,0 +1,6 @@
+wget http://mirrors.cnnic.cn/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+tar vxf apache-maven-3.3.9-bin.tar.gz
+===============================================================================================
+vim /etc/profile
+export MAVEN_HOME=/usr/local/maven/apache-maven-3.3.9
+export PATH=$PATH:$MAVEN_HOME/bin
