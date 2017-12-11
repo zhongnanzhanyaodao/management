@@ -31,8 +31,8 @@ public class TestAction {
     @RequestMapping("/test")
     public PlatformResponse test(String input) {
         log.info(input);
-        RedisServerFactory.getRedisServer().setString("zhazha", "you");
-        log.info(RedisServerFactory.getRedisServer().get("zhazha"));
+        RedisServerFactory.getRedisServer().setString("zhazha", "you","test");
+        log.info(RedisServerFactory.getRedisServer().getString("zhazha","test"));
         return PlatformResponse.builder().data(MSG).build();
     }
 

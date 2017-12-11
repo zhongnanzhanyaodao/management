@@ -15,6 +15,7 @@ import java.util.Set;
 public class RedisServer {
 
     private static final ManagementLogUtil log = ManagementLogUtil.getLogger();
+    private static final String REDIS_KEY_NOT_EXIST = "nil";
     private Jedis jedis;
 
     private RedisServer(Jedis jedis) {
@@ -26,11 +27,22 @@ public class RedisServer {
         return redisServer;
     }
 
-
     public void release(Jedis jedis) {
         if (jedis != null) {
             jedis.close();
         }
+    }
+
+    public String setString(String key, String value, String methodName) {
+        String result = null;
+        try {
+            result = jedis.set(key, value);
+        } catch (Exception e) {
+            log.error("RedisServer setString key={} value={} methodName={} Exception", key, value, methodName, e);
+        } finally {
+            release(jedis);
+        }
+        return result;
     }
 
     public void setString(String key, String value, int cacheSeconds, String methodName) {
@@ -39,12 +51,34 @@ public class RedisServer {
             if (cacheSeconds > 0) {
                 jedis.expire(key, cacheSeconds);
             }
-        } catch (JedisException e) {
-            log.error("redis执行" + methodName + "失败", e);
+        } catch (Exception e) {
+            log.error("RedisServer setString key={} value={} cacheSeconds={} methodName={} Exception", key, value, cacheSeconds, methodName, e);
         } finally {
             release(jedis);
         }
     }
+
+    public String getString(String key, String methodName) {
+        String value = null;
+        try {
+            if (jedis.exists(key)) {
+                value = jedis.get(key);
+                value = (!Strings.isNullOrEmpty(value) && !REDIS_KEY_NOT_EXIST.equalsIgnoreCase(value)) ? value : null;
+            }
+        } catch (Exception e) {
+            log.error("RedisServer setString key={} methodName={} Exception", key, methodName, e);
+        } finally {
+            release(jedis);
+        }
+        return value;
+    }
+
+
+
+
+
+    /*=======================================================================================================================*/
+
 
     public void setIncr(String key, String methodName) {
         try {
@@ -128,18 +162,6 @@ public class RedisServer {
         return lastVal;
     }
 
-    public String get(String key) {
-        String lastVal = null;
-        try {
-            lastVal = jedis.get(key);
-        } catch (Exception e) {
-            log.error("######get failed key--->" + key + " value--->"
-                    + lastVal, e);
-        } finally {
-            release(jedis);
-        }
-        return lastVal;
-    }
 
     public void addStringToJedis(Map<String, String> batchData,
                                  int cacheSeconds, String methodName) {
@@ -421,21 +443,6 @@ public class RedisServer {
             }
         } catch (Exception e) {
             log.error("#####getStringFromJedis failed####", e);
-        } finally {
-            release(jedis);
-        }
-        return value;
-    }
-
-    public String getString(String key) {
-        String value = null;
-        try {
-            if (jedis.exists(key)) {
-                value = jedis.get(key);
-                value = !Strings.isNullOrEmpty(value) && !"nil".equalsIgnoreCase(value) ? value : null;
-            }
-        } catch (Exception e) {
-            log.error("getString异常!", e);
         } finally {
             release(jedis);
         }
@@ -970,18 +977,6 @@ public class RedisServer {
         return result;
     }
 
-    public String setString(String key, String value) {
-
-        String result = null;
-        try {
-            result = jedis.set(key, value);
-        } catch (Exception e) {
-            log.error("setString异常:", e);
-        } finally {
-            release(jedis);
-        }
-        return result;
-    }
 
     public String lpopUtils(String key) {
 
