@@ -5,6 +5,9 @@ import com.zydcompany.management.config.redis.RedisServerFactory;
 import com.zydcompany.management.domain.dto.TestDto;
 import com.zydcompany.management.domain.model.SystemUserDo;
 import com.zydcompany.management.exception.BusinessException;
+import com.zydcompany.management.manager.lock.zookeeper.DistributeLock;
+import com.zydcompany.management.manager.lock.zookeeper.DistributeLockHelper;
+import com.zydcompany.management.manager.lock.zookeeper.ZKClientOperation;
 import com.zydcompany.management.service.SystemUserService;
 import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
@@ -27,12 +30,14 @@ public class TestAction {
 
     @Autowired
     SystemUserService systemUserService;
+    @Autowired
+    ZKClientOperation zkOpt;
 
     @RequestMapping("/test")
     public PlatformResponse test(String input) {
         log.info(input);
-        RedisServerFactory.getRedisServer().setString("zhazha", "you","test");
-        log.info(RedisServerFactory.getRedisServer().getString("zhazha","test"));
+        RedisServerFactory.getRedisServer().setString("zhazha", "you", "test");
+        log.info(RedisServerFactory.getRedisServer().getString("zhazha", "test"));
         return PlatformResponse.builder().data(MSG).build();
     }
 
@@ -70,4 +75,23 @@ public class TestAction {
         }
         return PlatformResponse.builder().build();
     }
+
+    @RequestMapping("/testZookeeper")
+    public PlatformResponse testZookeeper(String inputId) {
+        // 分布式锁
+        String lockKey = "testZookeeper" + inputId;
+        DistributeLock lock = DistributeLockHelper.getZkLock(zkOpt);
+        lock.lockAnDoWork(lockKey, 0, () -> {
+            log.info("testZookeeper is donging work");
+          /*  try {
+                Thread.sleep(60*60*1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+            log.info("testZookeeper sleep down");
+        });
+        return PlatformResponse.builder().build();
+    }
+
+
 }

@@ -4,14 +4,14 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout>
                 <charset>UTF-8</charset>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
             </PatternLayout>
         </Console>
         <RollingFile name="RollingFile" fileName="/data/logs/management/management.log"
                      filePattern="/data/logs/management/management-%d{yyyy-MM-dd}.%i.log">
             <PatternLayout>
                 <charset>UTF-8</charset>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
