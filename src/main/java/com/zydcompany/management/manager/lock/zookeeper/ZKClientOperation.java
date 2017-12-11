@@ -4,9 +4,6 @@ import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.imps.CuratorFrameworkState;
-import org.apache.curator.framework.state.ConnectionState;
-import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.utils.CloseableUtils;
 import org.springframework.stereotype.Component;
@@ -26,7 +23,7 @@ public class ZKClientOperation {
     public static final String CONNECTION = ManagementPropertiesUtil.getManagementBasicPropertiesValue("zookeeper.address");
     public static final Integer RETRY_SLEEP_MS = 100; // 连接失败重试时间间隔
     public static final Integer MAX_RETRIES = 2; // 最多重试次数
-    public static final Integer CONNECTION_TIME_OUT_MS = 10 * 1000; // 连接超时时间
+    public static final Integer CONNECTION_TIME_OUT_MS = 3 * 1000; // 连接超时时间
     public static final Integer SESSION_TIME_OUT_MS = 10 * 1000; // 会话超时时间
 
     @PostConstruct
