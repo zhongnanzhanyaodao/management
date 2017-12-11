@@ -1,0 +1,27 @@
+cd /usr/local
+mkdir zookeeper
+cd zookeeper
+mkdir data
+mkdir log
+wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.3.6/zookeeper-3.3.6.tar.gz
+tar -zxvf zookeeper-3.3.6.tar.gz
+============================================================================
+cd /usr/local/zookeeper/zookeeper-3.3.6/conf
+cp zoo_sample.cfg zoo.cfg
+vim /usr/local/zookeeper/zookeeper-3.3.6/conf/zoo.cfg
+#注意路径前后不要多余空格
+dataDir=/usr/local/zookeeper/data
+dataLogDir=/usr/local/zookeeper/log
+============================================================================
+vim /etc/profile
+export ZOOKEEPER_HOME=/usr/local/zookeeper/zookeeper-3.3.6
+export PATH=$PATH:$ZOOKEEPER_HOME/bin
+source /etc/profile
+=============================================================================
+zkServer.sh stop
+zkServer.sh start
+zkServer.sh status
+zkServer.sh restart
+=============================================================================
+#连接测试
+/usr/local/zookeeper/zookeeper-3.3.6/bin/zkCli.sh
