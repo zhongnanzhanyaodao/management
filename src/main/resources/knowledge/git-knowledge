@@ -4,3 +4,16 @@ git config --list
 git config --global user.name "zhongnanzhanyaodao"
 #修改git提交者邮箱
 git config --global user.email "262548405@qq.com"
+================================================================
+ssh-keygen -t rsa -C "262548405@qq.com"
+-------------------------------------------------------------------------
+##这种一般不用。因为一般先建立远程仓库,再将远程仓库clone到本地。
+#建立本地仓库
+git init
+#在本地的仓库下运行命令关联远程仓库：
+git remote add origin git@github.com:zhongnanzhanyaodao/management.git
+-------------------------------------------------------------------------
+git clone git@github.com:zhongnanzhanyaodao/management.git
+#加上了-u参数,Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+git push -u origin master
+=========================================================================
