@@ -1,9 +1,9 @@
 package com.zydcompany.management.manager.lock.zookeeper;
 
 /**
- * 分布式锁 辅助类
+ * 分布式锁 工厂类
  */
-public class DistributeLockHelper {
+public class DistributeLockFactory {
 
     /**
      * 获取zk锁

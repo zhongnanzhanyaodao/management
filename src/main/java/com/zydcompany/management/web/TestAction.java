@@ -6,7 +6,7 @@ import com.zydcompany.management.domain.dto.TestDto;
 import com.zydcompany.management.domain.model.SystemUserDo;
 import com.zydcompany.management.exception.BusinessException;
 import com.zydcompany.management.manager.lock.zookeeper.DistributeLock;
-import com.zydcompany.management.manager.lock.zookeeper.DistributeLockHelper;
+import com.zydcompany.management.manager.lock.zookeeper.DistributeLockFactory;
 import com.zydcompany.management.manager.lock.zookeeper.ZKClientOperation;
 import com.zydcompany.management.service.SystemUserService;
 import com.zydcompany.management.util.FastJSONHelper;
@@ -80,7 +80,7 @@ public class TestAction {
     public PlatformResponse testZookeeper(String inputId) {
         // 分布式锁
         String lockKey = "testZookeeper" + inputId;
-        DistributeLock lock = DistributeLockHelper.getZkLock(zkOpt);
+        DistributeLock lock = DistributeLockFactory.getZkLock(zkOpt);
         lock.lockAnDoWork(lockKey, 0, () -> {
             log.info("testZookeeper is donging work");
           /*  try {
