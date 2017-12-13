@@ -22,8 +22,12 @@ public class ZKDistributeLock implements DistributeLock {
 
     private ZKClientOperation zkOpt;
 
-    public ZKDistributeLock(ZKClientOperation zkOpt) {
+    private ZKDistributeLock(ZKClientOperation zkOpt) {
         this.zkOpt = zkOpt;
+    }
+
+    public static ZKDistributeLock zKDistributeLockInstance(ZKClientOperation zkOpt) {
+        return new ZKDistributeLock(zkOpt);
     }
 
     /**

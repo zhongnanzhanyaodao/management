@@ -11,6 +11,6 @@ public class DistributeLockFactory {
      * @return
      */
     public static DistributeLock getZkLock(ZKClientOperation zkOpt){
-        return new ZKDistributeLock(zkOpt);
+        return ZKDistributeLock.zKDistributeLockInstance(zkOpt);
     }
 }
