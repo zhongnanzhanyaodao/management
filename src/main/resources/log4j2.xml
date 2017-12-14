@@ -15,15 +15,25 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="64 MB"/>
+                <!--每个文件最大30M-->
+                <SizeBasedTriggeringPolicy size="30M"/>
             </Policies>
-            <DefaultRolloverStrategy max="100"/>
+            <!--<DefaultRolloverStrategy max="50"/>，如果不做配置，默认是7，这个7指的是上面i的最大值，超过了就会覆盖之前的,即每天最多50个文件，每个文件最大30M-->
+            <DefaultRolloverStrategy max="50">
+                <!--删除/data/logs/management/目录下例如:management-2017-12-14.1.log的日志，只保留最近7天的日志-->
+                <!--maxDepth default is 1, meaning only the files in the specified base directory-->
+                <Delete basePath="/data/logs/management/" maxDepth="1">
+                    <IfFileName glob="management-*.log"/>
+                    <!--只保留最近7天的日志-->
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
     </appenders>
     <loggers>
         <Root level="INFO">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFile"/>
-        </Root >
+        </Root>
     </loggers>
 </configuration>
