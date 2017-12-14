@@ -37,7 +37,8 @@ package knowledge.thread;
 public class InterruptedExample {
 
     public static void main(String[] args) {
-        testBlock();
+        testBlockJoin();
+//        testBlock();
 //        testNoBlock();
     }
 
@@ -60,7 +61,7 @@ public class InterruptedExample {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        // 一段时间以后,设置子线程中断标志
+        // 一段时间以后,设置childThread中断标志
         childThread.interrupt();
     }
 
@@ -74,8 +75,54 @@ public class InterruptedExample {
                 // doing work...
                 System.out.println("doing work...");
                 try {
-                    //使子线程处于阻塞状态
+                    //使childThread处于阻塞状态
                     Thread.currentThread().sleep(5 * 1000L);
+                } catch (InterruptedException e) {
+                    System.out.println("childThread catch InterruptedException...");
+                    e.printStackTrace();
+                    System.out.println("childThread after catch InterruptedException isInterrupted: " + Thread.currentThread().isInterrupted());
+                    //重新设置childThread的中断状态,即能退出循环
+                    Thread.currentThread().interrupt();
+                }
+            }
+            System.out.println("after while...");
+        });
+        childThread.start();
+        try {
+            //主线程休眠2秒，保证childThread也执行到了sleep，即childThread处于阻塞状态
+            Thread.currentThread().sleep(2 * 1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // 一段时间以后,设置childThread中断标志，childThread此时处于阻塞状态
+        childThread.interrupt();
+    }
+
+    /**
+     * 线程处于阻塞状态(join)时对中断的处理
+     */
+    public static void testBlockJoin() {
+
+        Thread joinThread = new Thread(() -> {
+            try {
+                //使joinThread没那么早结束
+                System.out.println("joinThread begin...");
+                Thread.currentThread().sleep(30 * 1000L);
+                System.out.println("joinThread end...");
+            } catch (InterruptedException e) {
+
+            }
+        });
+        joinThread.start();
+
+        Thread childThread = new Thread(() -> {
+            //isInterrupted()只会获取线程中断状态，不会清除中断状态。
+            while (!Thread.currentThread().isInterrupted()) {
+                // doing work...
+                System.out.println("doing work...");
+                try {
+                    //使childThread等待joinThread完成后再执行，即childThread处于阻塞状态
+                    joinThread.join();
                 } catch (InterruptedException e) {
                     System.out.println("childThread catch InterruptedException...");
                     e.printStackTrace();
@@ -88,12 +135,12 @@ public class InterruptedExample {
         });
         childThread.start();
         try {
-            //主线程休眠2秒，保证子线程也执行到了sleep，即子线程处于阻塞状态
+            //主线程休眠2秒，保证childThread执行到了joinThread.join()，即childThread处于阻塞状态
             Thread.currentThread().sleep(2 * 1000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        // 一段时间以后,设置子线程中断标志，子线程此时处于阻塞状态
+        // 一段时间以后,设置childThread中断标志，childThread此时处于阻塞状态
         childThread.interrupt();
     }
 }
