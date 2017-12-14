@@ -145,13 +145,14 @@
             <artifactId>curator-recipes</artifactId>
             <version>2.10.0</version>
         </dependency>
-      <!--  <dependency>
-            <groupId>com.github.sgroschupf</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>0.1</version>
-        </dependency>-->
         <!--zookeeper-->
-
+        <!--ssdb-->
+        <dependency>
+            <groupId>org.nutz</groupId>
+            <artifactId>ssdb4j</artifactId>
+            <version>9.4</version>
+        </dependency>
+        <!--ssdb-->
     </dependencies>
 
     <profiles>

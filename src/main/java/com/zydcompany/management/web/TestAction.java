@@ -2,6 +2,7 @@ package com.zydcompany.management.web;
 
 import com.zydcompany.management.common.PlatformResponse;
 import com.zydcompany.management.config.redis.RedisServerFactory;
+import com.zydcompany.management.config.ssdb.SsdbFactory;
 import com.zydcompany.management.domain.dto.TestDto;
 import com.zydcompany.management.domain.model.SystemUserDo;
 import com.zydcompany.management.exception.BusinessException;
@@ -12,6 +13,8 @@ import com.zydcompany.management.service.SystemUserService;
 import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
+import org.nutz.ssdb4j.spi.Response;
+import org.nutz.ssdb4j.spi.SSDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,6 +93,19 @@ public class TestAction {
             }*/
             log.info("testZookeeper sleep down");
         });
+        return PlatformResponse.builder().build();
+    }
+
+    @RequestMapping("/testSSDB")
+    public PlatformResponse testSSDB(String inputId) {
+        SSDB ssdb = SsdbFactory.getSSDB();
+        ssdb.set("name", "dwj").check(); // call check() to make sure resp is ok
+        Response resp = ssdb.get("name");
+        if (!resp.ok()) {
+            // ...
+        } else {
+            log.info("name=" + resp.asString());
+        }
         return PlatformResponse.builder().build();
     }
 
