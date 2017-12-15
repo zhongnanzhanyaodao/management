@@ -8,6 +8,7 @@ public class NumberConstant {
     public static final Integer TWO = 2;
     public static final Integer THREE = 3;
     public static final Integer FOUR = 4;
+    public static final Integer TWENTY = 20;
     public static final Integer TWO_HUNDRED = 200;
     public static final Integer FIVE_HUNDRED = 500;
 }
