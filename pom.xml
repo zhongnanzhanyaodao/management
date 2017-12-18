@@ -67,6 +67,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <!--spring-boot-->
+        <!--thymeleaf模板引擎-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!--thymeleaf模板引擎-->
         <!--替换tomcat为jetty-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
