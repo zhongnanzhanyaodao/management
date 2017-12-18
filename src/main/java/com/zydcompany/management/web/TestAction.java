@@ -37,34 +37,28 @@ public class TestAction {
     ZKClientOperation zkOpt;
 
     @RequestMapping("/test")
-    public PlatformResponse test(String input) {
-        log.info(input);
-        RedisServerFactory.getRedisServer().setString("zhazha", "you", "test");
-        log.info(RedisServerFactory.getRedisServer().getString("zhazha", "test"));
+    public PlatformResponse test() {
+        log.info("test...");
         return PlatformResponse.builder().data(MSG).build();
     }
 
     @RequestMapping("/testJson")
     public PlatformResponse testJson(@RequestBody TestDto jsonData) {
-        if (false) {
-            throw new RuntimeException("testJsonException");
-        }
+        log.info("testJson... jsonData={}", FastJSONHelper.serialize(jsonData));
         return PlatformResponse.builder().data(jsonData).build();
     }
 
     @RequestMapping("/testDb")
     public PlatformResponse testDb() {
         log.info("testDb...");
-        String testValue = ManagementPropertiesUtil.getManagementBasicPropertiesValue("testKey");
-        String environment = ManagementPropertiesUtil.getManagementBasicPropertiesValue("environment");
-        log.info("environment={} testValue={}", environment, testValue);
         SystemUserDo systemUserDo = systemUserService.getSystemUserDoById(BigInteger.valueOf(1));
-        log.info(FastJSONHelper.serialize(systemUserDo));
+        log.info("testDb systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
         return PlatformResponse.builder().data(systemUserDo).build();
     }
 
     @RequestMapping("/testBaseException")
-    public PlatformResponse testBaseException(String input) {
+    public PlatformResponse testBaseException() {
+        log.info("testBaseException ...");
         if (true) {
             throw new RuntimeException("testBaseException");
         }
@@ -72,16 +66,19 @@ public class TestAction {
     }
 
     @RequestMapping("/testBusinessException")
-    public PlatformResponse testBusinessException(String input) {
+    public PlatformResponse testBusinessException() {
+        log.info("testBusinessException ...");
         if (true) {
-            throw BusinessException.createBusinessException("testException");
+            throw BusinessException.createBusinessException("testBusinessException");
         }
         return PlatformResponse.builder().build();
     }
 
     @RequestMapping("/testZookeeper")
-    public PlatformResponse testZookeeper(String inputId) {
+    public PlatformResponse testZookeeper() {
+        log.info("testZookeeper ...");
         // 分布式锁
+        String inputId = "666";
         String lockKey = "testZookeeper" + inputId;
         DistributeLock lock = DistributeLockFactory.getZkLock(zkOpt);
         lock.lockAnDoWork(lockKey, 0, () -> {
@@ -91,22 +88,40 @@ public class TestAction {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
-            log.info("testZookeeper sleep down");
+            log.info("testZookeeper work done");
         });
         return PlatformResponse.builder().build();
     }
 
+    @RequestMapping("/testRedis")
+    public PlatformResponse testRedis() {
+        log.info("testRedis ...");
+        RedisServerFactory.getRedisServer().setString("zhazha", "you", "testRedis");
+        String value = RedisServerFactory.getRedisServer().getString("zhazha", "testRedis");
+        log.info("testRedis value={}", value);
+        return PlatformResponse.builder().data(value).build();
+    }
+
+    @RequestMapping("/testEnvironment")
+    public PlatformResponse testEnvironment() {
+        log.info("testEnvironment ...");
+        String environment = ManagementPropertiesUtil.getManagementBasicPropertiesValue("environment");
+        log.info("testEnvironment environment={}", environment);
+        return PlatformResponse.builder().data(environment).build();
+    }
+
     @RequestMapping("/testSSDB")
     public PlatformResponse testSSDB(String inputId) {
+        log.info("testSSDB ...");
         SSDB ssdb = SsdbFactory.getSSDB();
-        ssdb.set("name", "dwj").check(); // call check() to make sure resp is ok
+        ssdb.set("name", "rencai").check(); // call check() to make sure resp is ok
         Response resp = ssdb.get("name");
         if (!resp.ok()) {
             // ...
         } else {
-            log.info("name=" + resp.asString());
+            log.info("testSSDB value={}", resp.asString());
         }
-        return PlatformResponse.builder().build();
+        return PlatformResponse.builder().data(resp.asString()).build();
     }
 
 
