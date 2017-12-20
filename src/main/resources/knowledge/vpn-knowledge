@@ -1,0 +1,85 @@
+#vpn服务器安装完成时输出如下：
+#############################################################
+#
+# [Install Complete]
+# Version:1.2.0
+# There is the default login info of your IPSec/IkeV2 VPN Service
+# UserName: myUserName
+# PassWord: myUserPass
+# PSK: myPSKkey
+# you should change default username and password in /usr/local/etc/ipsec.secrets
+# you cert: /data/my_key/ca.cert.pem
+# you must copy the cert to the client and install it.
+#
+#############################################################
+
+=================================================================================================
+#centos 6.9 搭建vpn教程
+https://github.com/quericy/one-key-ikev2-vpn
+----------------------------------------------------------------------
+#检测linux vps是xen openvz还是kvm的方法
+yum -y install virt-what
+virt-what
+----------------------------------------------------------------------
+#Windows 10系统设置IKEv2 VPN
+注意:需要先导入安装vpn时生成的证书,见下方客户端配置说明
+http://net.xmu.edu.cn/c0/33/c5588a245811/page.htm
+----------------------------------------------------------------------
+#iphone6s 设置IKEv2 VPN
+注意:需要先导入安装vpn时生成的证书,见下方客户端配置说明
+注意:服务器和远程ID都为vpn服务器的ip地址，描述随便填，本地ID可以不填
+http://net.xmu.edu.cn/c0/34/c5588a245812/page.htm
+----------------------------------------------------------------------
+#阿里云ecs服务器 配置安全组开放规则
+授权策略   协议类型    端口范围       授权类型      授权对象       描述        优先级
+允许	      自定义UDP   500/500      地址段访问    0.0.0.0/0     vpn udp        1
+=================================================================================================
+
+服务端安装说明(要是图方便很多地方可一路回车)
+    下载脚本:
+    wget --no-check-certificate https://raw.githubusercontent.com/quericy/one-key-ikev2-vpn/master/one-key-ikev2.sh
+    运行脚本：
+    chmod +x one-key-ikev2.sh
+    bash one-key-ikev2.sh
+    等待自动配置部分内容后，选择vps类型（OpenVZ还是Xen、KVM） 见上方#检测linux vps是xen openvz还是kvm的方法
+    选择使用使用证书颁发机构签发的SSL证书还是生成自签名证书：
+        这里我选择no,使用自签名证书（客户端如果使用IkeV2方式连接，将需要导入生成的证书并信任）则需要填写证书的相关信息(C,O,CN)，一路回车使用默认值
+    一路回车使用默认值...
+    看到install Complete字样即表示安装完成。默认用户名密码将以黄字显示，可根据提示自行修改配置文件中的用户名密码,保存并重启服务生效。
+    这三个改成自己的：
+    # UserName: myUserName
+    # PassWord: myUserPass
+    # PSK: myPSKkey
+    将提示信息中的证书文件ca.cert.pem拷贝到客户端，修改后缀名为.cer后导入。ios设备使用Ikev1无需导入证书，而是需要在连接时输入共享密钥，共享密钥即是提示信息中的黄字PSK.
+
+客户端配置说明
+    iOS/Windows7/Linux 均可使用IkeV2,认证方式为用户名+密码。因为我使用的自签名证书则需要先导入证书才能连接,可将ca.cert.pem更改后缀名为.cer。手机端需要通过浏览器导入
+    #iphone6s 证书导入办法
+       先将证书以附件的形式发送邮件,再用iphone自带的safari浏览器登录邮箱,邮箱里打开邮件并点开证书附件直接安装（即需要用safari安装证书）
+    Windows 系统导入证书需要导入到"本地计算机"的"受信任的根证书颁发机构".
+    例如win10：双击证书安装，存储位置选择"本地计算机"，手动选择证书存储目录为"受信任的根证书颁发机构"
+
+卸载方式
+    进入脚本所在目录的strongswan文件夹执行:
+    make uninstall
+    删除脚本所在目录的相关文件(one-key-ikev2.sh,strongswan.tar.gz,strongswan文件夹,my_key文件夹).
+    卸载后记得检查iptables配置.
+
+部分问题解决方案
+    ipsec启动问题：服务器重启后默认ipsec不会自启动，请命令手动开启
+    ipsec常用指令:
+    ipsec start   #启动服务
+    ipsec stop    #关闭服务
+    ipsec restart #重启服务
+    ipsec reload  #重新读取
+    ipsec status  #查看状态
+    ipsec --help  #查看帮助
+
+    可连接但是无法访问网络：
+        检查iptables是否正常启用,检查iptables规则是否与其他地方冲突,或根据服务器防火墙的实际情况手动修改配置。
+        检查sysctl是否开启ip_forward:
+            打开sysctl文件:vim /etc/sysctl.conf
+            修改net.ipv4.ip_forward=1后保存并关闭文件
+            使用以下指令刷新sysctl：sysctl -p
+            如执行后正常回显则表示生效。如显示错误信息，请重新打开/etc/syctl并根据错误信息对应部分用#号注释，保存后再刷新sysctl直至不会报错为止。
+
