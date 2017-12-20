@@ -14,6 +14,10 @@
                 <exclude>application-dev.properties</exclude>
                 <exclude>application-stg.properties</exclude>
                 <exclude>application-prd.properties</exclude>
+                <exclude>knowledge/</exclude>
+                <exclude>static/</exclude>
+                <exclude>todo/</exclude>
+                <exclude>templates/</exclude>
             </excludes>
             <filtered>true</filtered>
         </fileSet>
