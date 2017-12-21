@@ -5,6 +5,8 @@
 5、spring整个体系，bean加载过程，bean之间如何调用，如何定制化bean,定制了bean,原来的bean是否没了
 6、hashMap的一切
 7、ca证书
+8、git合并代码日志
+9、nginx 404页面
 
 
 
@@ -15,5 +17,6 @@
 五、hashMap等基本数据结构
 六、数据库索引,数据库锁,优化,隔离级别等
 七、http协议和tcp协议
-八、redis
-九、微服务springcloud
+八、设计模式
+九、redis
+十、微服务springcloud
