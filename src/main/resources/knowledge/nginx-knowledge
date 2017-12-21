@@ -1,0 +1,39 @@
+Nginx 环境准备：
+安装Nginx需要完成以下依赖的安装
+1.gcc 安装：yum install gcc-c++
+2.PCRE pcre-devel 安装：yum install -y pcre pcre-devel
+3.zlib 安装: yum install -y zlib zlib-devel
+4.OpenSSL 安装:yum install -y openssl openssl-devel
+===============================================================================================
+安装Nginx
+1. 下载Nginx
+wget http://nginx.org/download/nginx-1.10.3.tar.gz
+2. 解压：
+tar -zxvf nginx-1.10.3.tar.gz
+3. 配置：
+cd nginx-1.10.31 进入nginx解压目录
+./configure
+4. 编译安装:
+make
+make install
+===============================================================================================
+5. 查找安装路径：
+whereis nginx
+启动、停止Nginx:
+1. 查找nginx安装路径：whereis nginx
+2. 进入nginx安装路径：cd /usr/local/nginx/sbin
+3. 启动：
+./nginx
+4. 停止：
+./nginx -s stop:此方式相当于先查出nginx进程id再使用kill命令强制杀掉进程。
+./nginx -s quit:此方式停止步骤是待nginx进程处理任务完毕再进行停止。
+5. 重启:
+先停止再启动：./nginx -s quit; ./nginx
+6. 重新加载配置文件：
+当nginx的配置文件 nginx.conf 修改后，要想让配置生效需要重启 nginx,
+使用-s reload不用先停止nginx再启动,nginx 即可将配置信息在nginx中生效
+./nginx -s reload
+7、设置Nginx开机自启动：
+vim /etc/rc.local
+在rc.local增加启动代码：
+/usr/local/nginx/sbin/nginx

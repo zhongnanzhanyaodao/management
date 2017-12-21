@@ -70,7 +70,15 @@ http://net.xmu.edu.cn/c0/34/c5588a245812/page.htm
     卸载后记得检查iptables配置.
 
 部分问题解决方案
-    ipsec启动问题：服务器重启后默认ipsec不会自启动，请命令手动开启
+
+    iptables和ipsec添加开机启动：
+    vim /etc/rc.local
+    添加ipables 启动脚本：
+    /etc/rc.d/init.d/iptables start
+    添加ipsec添加开机启动 启动脚本：
+    /usr/local/sbin/ipsec start
+
+    ipsec启动问题：服务器重启后默认ipsec不会自启动，请手动开启,或添加/usr/local/sbin/ipsec start到自启动脚本文件中(如rc.local等)
     ipsec常用指令:
     ipsec start   #启动服务
     ipsec stop    #关闭服务
