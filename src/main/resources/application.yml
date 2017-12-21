@@ -1,6 +1,6 @@
 server:
   display-name: management
-  port: 80
+  port: 8066
   contextPath: /management
 
 #忽略权限拦截
