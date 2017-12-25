@@ -25,7 +25,7 @@ MONITOR_DIR=/data/webapps/management/management-1.0/script/monitor
 #全jar包
 LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
 #java内存参数
-JAVA_MEM_OPTS=" -server -Xms300M -Xmx300M -XX:SurvivorRatio=2 -XX:+UseParallelGC "
+JAVA_MEM_OPTS=" -server -Xms200M -Xmx200M -XX:SurvivorRatio=2 -XX:+UseParallelGC "
 
 #递归创建监控目录
 mkdir -p "$MONITOR_DIR/"
