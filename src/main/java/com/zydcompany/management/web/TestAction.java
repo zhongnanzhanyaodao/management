@@ -1,6 +1,7 @@
 package com.zydcompany.management.web;
 
 import com.zydcompany.management.common.PlatformResponse;
+import com.zydcompany.management.config.disconf.DemoConfig;
 import com.zydcompany.management.config.redis.RedisServerFactory;
 import com.zydcompany.management.config.ssdb.SsdbFactory;
 import com.zydcompany.management.domain.dto.TestDto;
@@ -35,6 +36,8 @@ public class TestAction {
     SystemUserService systemUserService;
     @Autowired
     ZKClientOperation zkOpt;
+    @Autowired
+    DemoConfig demoConfig;
 
     @RequestMapping("/test")
     public PlatformResponse test() {
@@ -122,6 +125,16 @@ public class TestAction {
             log.info("testSSDB value={}", resp.asString());
         }
         return PlatformResponse.builder().data(resp.asString()).build();
+    }
+
+    @RequestMapping("/testDisconf")
+    public PlatformResponse testDisconf() {
+        log.info("testDisconf ...");
+        String id = demoConfig.getId();
+        log.info("testDisconf id={}", id);
+        String environment = ManagementPropertiesUtil.getManagementBasicPropertiesValue("environment");
+        log.info("testEnvironment environment={}", environment);
+        return PlatformResponse.builder().data(environment + ":" + id).build();
     }
 
 

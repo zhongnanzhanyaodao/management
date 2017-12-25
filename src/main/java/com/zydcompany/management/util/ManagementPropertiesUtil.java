@@ -15,6 +15,8 @@ public class ManagementPropertiesUtil {
     private static final String redisFileName = "redis.properties";
     private static Properties ssdbProperties;
     private static final String ssdbFileName = "ssdb.properties";
+    private static Properties zookeeperProperties;
+    private static final String zookeeperFileName = "zookeeper.properties";
 
     static {
 
@@ -22,6 +24,7 @@ public class ManagementPropertiesUtil {
         dataSourceProperties = new Properties();
         redisProperties = new Properties();
         ssdbProperties = new Properties();
+        zookeeperProperties = new Properties();
 
         try {
             managementBasicProperties.load(ClassLoader.getSystemResourceAsStream(managementBasicFileName));
@@ -32,6 +35,8 @@ public class ManagementPropertiesUtil {
             log.info("初始化redis.properties成功");
             ssdbProperties.load(ClassLoader.getSystemResourceAsStream(ssdbFileName));
             log.info("ssdb.properties成功");
+            zookeeperProperties.load(ClassLoader.getSystemResourceAsStream(zookeeperFileName));
+            log.info("zookeeper.properties成功");
         } catch (Exception e) {
             log.info("ManagementPropertiesUtil初始化失败", e);
         }
@@ -53,4 +58,25 @@ public class ManagementPropertiesUtil {
         return ssdbProperties.getProperty(key);
     }
 
+    public static String getZookeeperPropertiesValue(String key) {
+        return zookeeperProperties.getProperty(key);
+    }
+
+    //=====================================reload when file change========================================
+
+    /**
+     * managementBasic.properties
+     */
+    public static void managementBasicPropReload() {
+
+        Properties managementBasicPropertiesTmp = new Properties();
+        try {
+            managementBasicPropertiesTmp.load(ClassLoader.getSystemResourceAsStream(managementBasicFileName));
+
+            managementBasicProperties = managementBasicPropertiesTmp;
+        } catch (Exception e) {
+            log.error("ManagementPropertiesUtil reload managementBasic.properties Exception", e);
+        }
+        log.info("ManagementPropertiesUtil reload managementBasic.properties success");
+    }
 }
