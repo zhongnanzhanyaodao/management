@@ -7,3 +7,5 @@ window系统idea编辑器,把右下方的编码格式CRLF改成linux的脚本编
 deploy.sh
 build_java.sh
 ========================================================
+下载disconf-web代码。
+http://disconf.readthedocs.io/zh_CN/latest/install/src/02.html
