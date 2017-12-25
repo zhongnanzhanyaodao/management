@@ -159,6 +159,13 @@
             <version>9.4</version>
         </dependency>
         <!--ssdb-->
+        <!--disconf-->
+        <dependency>
+            <groupId>com.baidu.disconf</groupId>
+            <artifactId>disconf-client</artifactId>
+            <version>2.6.36</version>
+        </dependency>
+        <!--disconf-->
     </dependencies>
 
     <profiles>

@@ -1,0 +1,7 @@
+在http://tomcat.apache.org/download-70.cgi下载
+apache-tomcat-7.0.82.tar.gz
+tar -xzvf  apache-tomcat-7.0.82.tar.gz
+#启动
+/usr/local/tomcat/apache-tomcat-7.0.82/bin/startup.sh
+#停止
+/usr/local/tomcat/apache-tomcat-7.0.82/bin/shutdown.sh
