@@ -1,5 +1,9 @@
+github:
+https://github.com/knightliao/disconf
+========================================================
 解决$'\r': command not found
 window系统idea编辑器,把右下方的编码格式CRLF改成linux的脚本编码格式LF
 这两个脚本都需要这样处理:
 deploy.sh
 build_java.sh
+========================================================
