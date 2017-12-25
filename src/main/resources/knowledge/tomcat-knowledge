@@ -9,4 +9,4 @@ tar -xzvf  apache-tomcat-7.0.82.tar.gz
 #修改tomcat启动内存大小
 vim /usr/local/tomcat/apache-tomcat-7.0.82/bin/catalina.sh
 在位置cygwin=false前添加:
-JAVA_OPTS="-server -Xms128m -Xmx128m"
+JAVA_OPTS=" -server -Xms200M -Xmx200M "
