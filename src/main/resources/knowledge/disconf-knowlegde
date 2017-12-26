@@ -11,8 +11,21 @@ yum install -y unzip zip
 ========================================================
 下载disconf-web代码。
 http://disconf.readthedocs.io/zh_CN/latest/install/src/02.html
-
-
-
-
+====================================================================
 http://duanwaijun.xyz:8082
+====================================================================
+#解决C3P0在Linux下Failed to get local InetAddress for VMID问题
+#java.net.UnknownHostException: iZj6chcl8bs46q536go2o5Z: iZj6chcl8bs46q536go2o5Z: Name or service not known
+http://blog.51cto.com/jooben/320623
+----------------------------------------------
+cat /etc/sysconfig/network
+NETWORKING=yes
+HOSTNAME=iZj6chcl8bs46q536go2o5Z
+NETWORKING_IPV6=no
+PEERNTP=no
+-----------------------------------------------
+复制HOSTNAME的值iZj6chcl8bs46q536go2o5Z
+-----------------------------------------------
+vim /etc/hosts
+-----------------------------------------------
+在127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 后加上 iZj6chcl8bs46q536go2o5Z 保存即可
