@@ -4,3 +4,6 @@ tar vxf apache-maven-3.3.9-bin.tar.gz
 vim /etc/profile
 export MAVEN_HOME=/usr/local/maven/apache-maven-3.3.9
 export PATH=$PATH:$MAVEN_HOME/bin
+===============================================================================================
+#让/etc/profile文件修改后立即生效
+source /etc/profile
