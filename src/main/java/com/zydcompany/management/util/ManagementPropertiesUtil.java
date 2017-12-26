@@ -17,6 +17,8 @@ public class ManagementPropertiesUtil {
     private static final String ssdbFileName = "ssdb.properties";
     private static Properties zookeeperProperties;
     private static final String zookeeperFileName = "zookeeper.properties";
+    private static Properties threadProperties;
+    private static final String threadFileName = "thread.properties";
 
     static {
 
@@ -25,6 +27,7 @@ public class ManagementPropertiesUtil {
         redisProperties = new Properties();
         ssdbProperties = new Properties();
         zookeeperProperties = new Properties();
+        threadProperties = new Properties();
 
         try {
             managementBasicProperties.load(ClassLoader.getSystemResourceAsStream(managementBasicFileName));
@@ -34,9 +37,11 @@ public class ManagementPropertiesUtil {
             redisProperties.load(ClassLoader.getSystemResourceAsStream(redisFileName));
             log.info("初始化redis.properties成功");
             ssdbProperties.load(ClassLoader.getSystemResourceAsStream(ssdbFileName));
-            log.info("ssdb.properties成功");
+            log.info("初始化ssdb.properties成功");
             zookeeperProperties.load(ClassLoader.getSystemResourceAsStream(zookeeperFileName));
-            log.info("zookeeper.properties成功");
+            log.info("初始化zookeeper.properties成功");
+            threadProperties.load(ClassLoader.getSystemResourceAsStream(threadFileName));
+            log.info("初始化thread.properties成功");
         } catch (Exception e) {
             log.info("ManagementPropertiesUtil初始化失败", e);
         }
@@ -62,6 +67,10 @@ public class ManagementPropertiesUtil {
         return zookeeperProperties.getProperty(key);
     }
 
+    public static String getThreadPropertiesValue(String key) {
+        return threadProperties.getProperty(key);
+    }
+
     //=====================================reload when file change========================================
 
     /**
@@ -72,7 +81,6 @@ public class ManagementPropertiesUtil {
         Properties managementBasicPropertiesTmp = new Properties();
         try {
             managementBasicPropertiesTmp.load(ClassLoader.getSystemResourceAsStream(managementBasicFileName));
-
             managementBasicProperties = managementBasicPropertiesTmp;
         } catch (Exception e) {
             log.error("ManagementPropertiesUtil reload managementBasic.properties Exception", e);

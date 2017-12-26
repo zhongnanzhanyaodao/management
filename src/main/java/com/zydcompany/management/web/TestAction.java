@@ -7,6 +7,7 @@ import com.zydcompany.management.config.ssdb.SsdbFactory;
 import com.zydcompany.management.domain.dto.TestDto;
 import com.zydcompany.management.domain.model.SystemUserDo;
 import com.zydcompany.management.exception.BusinessException;
+import com.zydcompany.management.manager.asynchronous.producer.TestProducer;
 import com.zydcompany.management.manager.lock.zookeeper.DistributeLock;
 import com.zydcompany.management.manager.lock.zookeeper.DistributeLockFactory;
 import com.zydcompany.management.manager.lock.zookeeper.ZKClientOperation;
@@ -14,6 +15,7 @@ import com.zydcompany.management.service.SystemUserService;
 import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
+import com.zydcompany.management.util.ThreadLocalUtil;
 import org.nutz.ssdb4j.spi.Response;
 import org.nutz.ssdb4j.spi.SSDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,8 @@ public class TestAction {
     ZKClientOperation zkOpt;
     @Autowired
     DemoConfig demoConfig;
+    @Autowired
+    TestProducer testProducer;
 
     @RequestMapping("/test")
     public PlatformResponse test() {
@@ -135,6 +139,13 @@ public class TestAction {
         String environment = ManagementPropertiesUtil.getManagementBasicPropertiesValue("environment");
         log.info("testEnvironment environment={}", environment);
         return PlatformResponse.builder().data(environment + ":" + id).build();
+    }
+
+    @RequestMapping("/testAsynchronous")
+    public PlatformResponse testAsynchronous() {
+        log.info("testAsynchronous ...");
+        testProducer.offer(ThreadLocalUtil.getTraceId());
+        return PlatformResponse.builder().data(ThreadLocalUtil.getTraceId()).build();
     }
 
 
