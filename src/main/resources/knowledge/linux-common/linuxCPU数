@@ -1,0 +1,10 @@
+#查看物理CPU的个数
+cat /proc/cpuinfo |grep "physical id"|sort |uniq|wc -l
+#查看逻辑CPU的个数,逻辑CPU个数可能大于 物理CPU的个数 乘以 单个物理CPU核数,因为超线程技术
+cat /proc/cpuinfo |grep "processor"|wc -l
+#查看单个物理CPU核数
+cat /proc/cpuinfo |grep "cores"|uniq
+======================================================
+top命令查看的CPU是逻辑CPU个数
+======================================================
+http://blog.csdn.net/dba_waterbin/article/details/8644626
