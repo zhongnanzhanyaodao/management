@@ -16,6 +16,13 @@ public class DisconfCallback implements IDisconfUpdatePipeline {
         if (FileEnum.MANAGEMENTBASIC.getFileName().equals(arg0)) {
             ManagementPropertiesUtil.managementBasicPropReload();
         }
+        //可以写多个if...
+       /* if ("FILE2".equals(arg0)) {
+            //do reload FILE2...
+        }
+        if ("FILE3".equals(arg0)) {
+            //do reload FILE3...
+        }*/
     }
 
     @Override

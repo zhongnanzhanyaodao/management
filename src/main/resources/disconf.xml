@@ -5,21 +5,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- 使用disconf必须添加以下配置 -->
     <bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
           destroy-method="destroy">
+        <!--扫描路径-->
         <property name="scanPackage" value="com.zydcompany.management.config.disconf"/>
     </bean>
     <bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
           init-method="init" destroy-method="destroy">
     </bean>
 
-    <!-- 使用托管方式的disconf配置(无代码侵入, 配置更改会自动reload)-->
+    <!-- 使用托管方式的disconf配置(配置更改会自动下载到本地,可以在实现IDisconfUpdatePipeline将配置reload至内存,见DisconfCallback)-->
     <bean id="configproperties-disconf"
           class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
         <property name="locations">
             <list>
                 <value>classpath*:managementBasic.properties</value>
+                <!--可以写多个value标签-->
+                <!-- <value>classpath*:1.properties</value>-->
+                <!-- <value>classpath*:2.json</value>-->
             </list>
         </property>
     </bean>
