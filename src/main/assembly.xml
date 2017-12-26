@@ -17,7 +17,7 @@
                 <exclude>knowledge/</exclude>
                 <exclude>static/</exclude>
                 <exclude>todo/</exclude>
-                <exclude>templates/</exclude>
+                <exclude>front/</exclude>
             </excludes>
             <filtered>true</filtered>
         </fileSet>
