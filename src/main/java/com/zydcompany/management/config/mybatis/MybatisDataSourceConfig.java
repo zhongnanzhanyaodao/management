@@ -2,10 +2,20 @@ package com.zydcompany.management.config.mybatis;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
+import io.shardingjdbc.core.api.ShardingDataSourceFactory;
+import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
+import io.shardingjdbc.core.api.config.TableRuleConfiguration;
+import io.shardingjdbc.core.api.config.strategy.StandardShardingStrategyConfiguration;
+import io.shardingjdbc.core.constant.ShardingPropertiesConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 数据源配置
@@ -13,13 +23,24 @@ import javax.sql.DataSource;
 @Configuration
 public class MybatisDataSourceConfig {
 
+
+    public DataSource initOriginDataSource0() {
+        String url = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.url.0");
+        String userName = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.userName.0");
+        String password = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.password.0");
+        return getDruidDataSource(url, userName, password);
+    }
+
+    public DataSource initOriginDataSource1() {
+        String url = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.url.1");
+        String userName = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.userName.1");
+        String password = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.password.1");
+        return getDruidDataSource(url, userName, password);
+    }
+
     //https://github.com/alibaba/druid
-    @Bean
-    public DataSource dataSource() {
+    private DruidDataSource getDruidDataSource(String url, String userName, String password) {
         String driverClassName = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.driverClassName");
-        String url = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.url");
-        String userName = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.userName");
-        String password = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.password");
         //连接初始值,连接池启动时创建的连接数量的初始值
         String initialSize = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.initialSize");
         //最小空闲值,当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请
@@ -62,8 +83,50 @@ public class MybatisDataSourceConfig {
         dataSource.setTimeBetweenEvictionRunsMillis(Long.parseLong(timeBetweenEvictionRunsMillis));
         dataSource.setMinEvictableIdleTimeMillis(Long.parseLong(minEvictableIdleTimeMillis));
         dataSource.setValidationQuery(validationQuery);
-
         return dataSource;
     }
 
+
+    @Bean
+    public DataSource dataSource() throws SQLException {
+        // 配置真实数据源
+        Map<String, DataSource> dataSourceMap = new HashMap<>();
+
+        // 配置第一个数据源
+        DataSource dataSource1 = initOriginDataSource0();
+        dataSourceMap.put("management_0", dataSource1);
+
+        // 配置第二个数据源
+        DataSource dataSource2 = initOriginDataSource1();
+        dataSourceMap.put("management_1", dataSource2);
+
+        // 配置management_system_user表规则
+//        TableRuleConfiguration managementSystemUserTableRuleConfig = new TableRuleConfiguration();
+//        orderTableRuleConfig.setLogicTable("t_order");
+//        orderTableRuleConfig.setActualDataNodes("db0.t_order_0, db0.t_order_1, db1.t_order_0, db1.t_order_1");
+//
+//
+//        ShardingRuleConfiguration managementSystemUserTableRuleConfig = new ShardingRuleConfiguration();
+//        managementSystemUserTableRuleConfig.getTableRuleConfigs().setLogicTable("management_system_user");
+//        managementSystemUserTableRuleConfig.setActualDataNodes("management_${0..1}.management_system_user_${0..4}");
+//
+//        // 配置分库策略
+//        managementSystemUserTableRuleConfig.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("mobile", "com.zydcompany.management.config.mybatis.sharding.CustomDataSourcePreciseShardingAlgorithm"));
+//
+//        // 配置分表策略
+//        managementSystemUserTableRuleConfig.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("mobile", "com.zydcompany.management.config.mybatis.sharding.CustomTablePreciseShardingAlgorithm"));
+//
+//        // 配置分片规则
+//        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
+//        shardingRuleConfig.getTableRuleConfigs().add(managementSystemUserTableRuleConfig);
+
+        // 省略配置其它表规则...
+
+        // 获取数据源对象
+        Properties properties = new Properties();
+        properties.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), "true");//显示sql
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, new ConcurrentHashMap(), properties);
+
+        return dataSource;
+    }
 }

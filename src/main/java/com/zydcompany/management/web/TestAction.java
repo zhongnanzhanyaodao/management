@@ -63,6 +63,22 @@ public class TestAction {
         return PlatformResponse.builder().data(systemUserDo).build();
     }
 
+    @RequestMapping("/testSaveUser")
+    public PlatformResponse testSaveUser(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testSaveUser... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        systemUserService.saveSystemUserDo(systemUserDo);
+        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoByMobile(systemUserDo.getMobile());
+        return PlatformResponse.builder().data(systemUserDoFromDb).build();
+    }
+
+    @RequestMapping("/testUpdateUser")
+    public PlatformResponse testUpdateUser(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testSaveUser... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        systemUserService.updateSystemUserDo(systemUserDo.getId(), systemUserDo.getAddress());
+        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoById(systemUserDo.getId());
+        return PlatformResponse.builder().data(systemUserDoFromDb).build();
+    }
+
     @RequestMapping("/testBaseException")
     public PlatformResponse testBaseException() {
         log.info("testBaseException ...");
@@ -148,5 +164,12 @@ public class TestAction {
         return PlatformResponse.builder().data(ThreadLocalUtil.getTraceId()).build();
     }
 
+    public static void main(String[] args) {
+       /* truncate management_system_user_0;
+        truncate management_system_user_1;
+        truncate management_system_user_2;
+        truncate management_system_user_3;
+        truncate management_system_user_4;*/
+    }
 
 }

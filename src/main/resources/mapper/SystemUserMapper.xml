@@ -31,4 +31,61 @@
         where id = #{id}
     </select>
 
+    <select id="getSystemUserDoByMobile" resultMap="SystemUserDoMap" parameterType="java.math.BigInteger">
+        select
+        id,
+        gmt_create,
+        gmt_modified,
+        name,
+        password,
+        age,
+        sex,
+        mobile,
+        birthday,
+        address
+        from management_system_user
+        where mobile = #{mobile}
+    </select>
+
+    <insert id="saveSystemUserDo" parameterType="com.zydcompany.management.domain.model.SystemUserDo">
+        insert into management_system_user
+        (
+        gmt_create,
+        gmt_modified,
+        name,
+        password,
+        age,
+        sex,
+        mobile,
+        birthday,
+        address
+        )
+        values
+        (
+        now(),
+        now(),
+        #{name},
+        #{password},
+        #{age},
+        #{sex},
+        #{mobile},
+        #{birthday},
+        #{address}
+        )
+
+    </insert>
+
+    <!-- <update id="updateSystemUserDo" parameterType="map">-->
+    <update id="updateSystemUserDo">
+        update management_system_user
+        <set>
+            <if test="address != null">
+                address = #{address}
+            </if>
+            gmt_modified = #{gmt_modified}
+        </set>
+        where id =#{id}
+    </update>
+
+
 </mapper>

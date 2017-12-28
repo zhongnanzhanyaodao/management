@@ -15,4 +15,16 @@ public class SystemUserService {
     public SystemUserDo getSystemUserDoById(BigInteger id) {
         return systemUserMapper.getSystemUserDoById(id);
     }
+
+    public SystemUserDo getSystemUserDoByMobile(String mobile) {
+        return systemUserMapper.getSystemUserDoByMobile(mobile);
+    }
+
+    public void saveSystemUserDo(SystemUserDo systemUserDo) {
+        systemUserMapper.saveSystemUserDo(systemUserDo);
+    }
+
+    public void updateSystemUserDo(BigInteger id, String address) {
+        systemUserMapper.updateSystemUserDo(id, address);
+    }
 }
