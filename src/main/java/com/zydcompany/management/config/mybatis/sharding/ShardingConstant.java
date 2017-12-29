@@ -23,4 +23,10 @@ public class ShardingConstant {
     //system_user真实数据节点，由数据源名 + 表名组成，以小数点分隔。
     public static final String SYSTEM_USER_ACTUALDATANODES = "management_${0..1}.system_user_${0..4}";
 
+
+    //user_detail_supplement逻辑表名
+    public static final String USER_DETAIL_SUPPLEMENT_LOGICTABLE = "user_detail_supplement";
+    //user_detail_supplement真实数据节点，由数据源名 + 表名组成，以小数点分隔。只保存在management_0的user_detail_supplement表
+    public static final String USER_DETAIL_SUPPLEMENT_ACTUALDATANODES = "management_0.user_detail_supplement";
+
 }

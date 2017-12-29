@@ -6,12 +6,14 @@ import com.zydcompany.management.config.redis.RedisServerFactory;
 import com.zydcompany.management.config.ssdb.SsdbFactory;
 import com.zydcompany.management.domain.dto.TestDto;
 import com.zydcompany.management.domain.model.SystemUserDo;
+import com.zydcompany.management.domain.model.UserDetailSupplementDo;
 import com.zydcompany.management.exception.BusinessException;
 import com.zydcompany.management.manager.asynchronous.producer.TestProducer;
 import com.zydcompany.management.manager.lock.zookeeper.DistributeLock;
 import com.zydcompany.management.manager.lock.zookeeper.DistributeLockFactory;
 import com.zydcompany.management.manager.lock.zookeeper.ZKClientOperation;
 import com.zydcompany.management.service.SystemUserService;
+import com.zydcompany.management.service.UserDetailSupplementService;
 import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
@@ -34,6 +36,8 @@ public class TestAction {
 
     @Autowired
     SystemUserService systemUserService;
+    @Autowired
+    UserDetailSupplementService userDetailSupplementService;
     @Autowired
     ZKClientOperation zkOpt;
     @Autowired
@@ -76,6 +80,15 @@ public class TestAction {
         SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoByMobile(systemUserDo.getMobile());
         return PlatformResponse.builder().data(systemUserDoFromDb).build();
     }
+
+    @RequestMapping("/testSaveUserDetail")
+    public PlatformResponse testSaveUserDetail(@RequestBody UserDetailSupplementDo userDetailSupplementDo) {
+        log.info("testSaveUserDetail... userDetailSupplementDo={}", FastJSONHelper.serialize(userDetailSupplementDo));
+        userDetailSupplementService.saveUserDetailSupplementDo(userDetailSupplementDo);
+        return PlatformResponse.builder().build();
+    }
+
+
 
    /* @RequestMapping("/testUpdateUserById")
     public PlatformResponse testUpdateUserById(@RequestBody SystemUserDo systemUserDo) {
@@ -197,7 +210,8 @@ public class TestAction {
         truncate system_user_1;
         truncate system_user_2;
         truncate system_user_3;
-        truncate system_user_4;*/
+        truncate system_user_4;
+        truncate user_detail_supplement;*/
     }
 
 }

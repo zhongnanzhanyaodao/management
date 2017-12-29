@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zydcompany.management.mapper.UserDetailSupplementMapper">
+
+    <resultMap id="UserDetailSupplementDoMap" type="com.zydcompany.management.domain.model.UserDetailSupplementDo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    </resultMap>
+
+    <insert id="saveUserDetailSupplementDo" parameterType="com.zydcompany.management.domain.model.UserDetailSupplementDo">
+        insert into user_detail_supplement
+        (
+        gmt_create,
+        gmt_modified,
+        user_id
+        )
+        values
+        (
+        now(),
+        now(),
+        #{userId}
+        )
+
+    </insert>
+
+
+</mapper>

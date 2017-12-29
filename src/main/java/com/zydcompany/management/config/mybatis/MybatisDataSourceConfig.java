@@ -41,6 +41,7 @@ public class MybatisDataSourceConfig {
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         //配置分片规则
         shardingRuleConfig.getTableRuleConfigs().add(getSystemUserTableRuleConfiguration());
+        shardingRuleConfig.getTableRuleConfigs().add(getUserDetailSupplementTableRuleConfiguration());
         //配置分库策略
         shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.DATA_BASE_SHARDING_COLUMN, CustomDataSourcePreciseShardingAlgorithm.class.getName()));
         //配置分表策略
@@ -54,7 +55,7 @@ public class MybatisDataSourceConfig {
     }
 
     /**
-     * 配置分片规则
+     * 配置SystemUserTable分片规则
      *
      * @return
      */
@@ -63,6 +64,18 @@ public class MybatisDataSourceConfig {
         systemUserTableRuleConfig.setLogicTable(ShardingConstant.SYSTEM_USER_LOGICTABLE);
         systemUserTableRuleConfig.setActualDataNodes(ShardingConstant.SYSTEM_USER_ACTUALDATANODES);
         return systemUserTableRuleConfig;
+    }
+
+    /**
+     * 配置UserDetailSupplement分片规则
+     *
+     * @return
+     */
+    private TableRuleConfiguration getUserDetailSupplementTableRuleConfiguration() {
+        TableRuleConfiguration userDetailSupplementTableRuleConfig = new TableRuleConfiguration();
+        userDetailSupplementTableRuleConfig.setLogicTable(ShardingConstant.USER_DETAIL_SUPPLEMENT_LOGICTABLE);
+        userDetailSupplementTableRuleConfig.setActualDataNodes(ShardingConstant.USER_DETAIL_SUPPLEMENT_ACTUALDATANODES);
+        return userDetailSupplementTableRuleConfig;
     }
 
     /**
