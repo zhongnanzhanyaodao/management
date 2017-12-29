@@ -3,6 +3,7 @@ package com.zydcompany.management.config.mybatis;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.zydcompany.management.config.mybatis.sharding.CustomDataSourcePreciseShardingAlgorithm;
 import com.zydcompany.management.config.mybatis.sharding.CustomSystemUserTablePreciseShardingAlgorithm;
+import com.zydcompany.management.config.mybatis.sharding.CustomUserDetailSupplementTablePreciseShardingAlgorithm;
 import com.zydcompany.management.config.mybatis.sharding.ShardingConstant;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
 import io.shardingjdbc.core.api.ShardingDataSourceFactory;
@@ -42,10 +43,7 @@ public class MybatisDataSourceConfig {
         //配置分片规则
         shardingRuleConfig.getTableRuleConfigs().add(getSystemUserTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getUserDetailSupplementTableRuleConfiguration());
-        //配置分库策略
-        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.DATA_BASE_SHARDING_COLUMN, CustomDataSourcePreciseShardingAlgorithm.class.getName()));
-        //配置分表策略
-        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.SYSTEM_USER_SHARDING_COLUMN, CustomSystemUserTablePreciseShardingAlgorithm.class.getName()));
+        //不配置全局分库分表策略,在特定的表中定制各自的分库分表策略
         //配置其它信息如：显示sql
         Properties properties = new Properties();
         properties.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), ManagementPropertiesUtil.getManagementBasicPropertiesValue("sharding.sql.show"));
@@ -63,6 +61,10 @@ public class MybatisDataSourceConfig {
         TableRuleConfiguration systemUserTableRuleConfig = new TableRuleConfiguration();
         systemUserTableRuleConfig.setLogicTable(ShardingConstant.SYSTEM_USER_LOGICTABLE);
         systemUserTableRuleConfig.setActualDataNodes(ShardingConstant.SYSTEM_USER_ACTUALDATANODES);
+        //配置SystemUserTable的分库策略,因为actualDataNodes配置了多个库，不配置分库策略,则多个库都会执行sql
+        systemUserTableRuleConfig.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.DATA_BASE_SHARDING_COLUMN, CustomDataSourcePreciseShardingAlgorithm.class.getName()));
+        //配置SystemUserTable的分表策略,因为actualDataNodes配置了多个表，不配置分表策略,则多个表都会执行sql
+        systemUserTableRuleConfig.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.SYSTEM_USER_SHARDING_COLUMN, CustomSystemUserTablePreciseShardingAlgorithm.class.getName()));
         return systemUserTableRuleConfig;
     }
 
@@ -74,7 +76,10 @@ public class MybatisDataSourceConfig {
     private TableRuleConfiguration getUserDetailSupplementTableRuleConfiguration() {
         TableRuleConfiguration userDetailSupplementTableRuleConfig = new TableRuleConfiguration();
         userDetailSupplementTableRuleConfig.setLogicTable(ShardingConstant.USER_DETAIL_SUPPLEMENT_LOGICTABLE);
+        //actualDataNodes指定数据源只有management_0,即不分库，不用再配置分库策略
         userDetailSupplementTableRuleConfig.setActualDataNodes(ShardingConstant.USER_DETAIL_SUPPLEMENT_ACTUALDATANODES);
+        //配置UserDetailSupplement的分表策略
+        userDetailSupplementTableRuleConfig.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.USER_DETAIL_SUPPLEMENT_COLUMN, CustomUserDetailSupplementTablePreciseShardingAlgorithm.class.getName()));
         return userDetailSupplementTableRuleConfig;
     }
 

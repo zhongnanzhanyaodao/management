@@ -23,10 +23,19 @@ public class ShardingConstant {
     //system_user真实数据节点，由数据源名 + 表名组成，以小数点分隔。
     public static final String SYSTEM_USER_ACTUALDATANODES = "management_${0..1}.system_user_${0..4}";
 
-
+    /*//user_detail_supplement 不分库也不分表，指定数据源为management_0
     //user_detail_supplement逻辑表名
     public static final String USER_DETAIL_SUPPLEMENT_LOGICTABLE = "user_detail_supplement";
     //user_detail_supplement真实数据节点，由数据源名 + 表名组成，以小数点分隔。只保存在management_0的user_detail_supplement表
-    public static final String USER_DETAIL_SUPPLEMENT_ACTUALDATANODES = "management_0.user_detail_supplement";
+    public static final String USER_DETAIL_SUPPLEMENT_ACTUALDATANODES = "management_0.user_detail_supplement";*/
+
+    //user_detail_supplement分表数目
+    public static final Integer USER_DETAIL_SUPPLEMENT_COUNT = NumberConstant.THREE;
+    //user_detail_supplement分表依据的字段
+    public static final String USER_DETAIL_SUPPLEMENT_COLUMN = "user_id";
+    //user_detail_supplement逻辑表名
+    public static final String USER_DETAIL_SUPPLEMENT_LOGICTABLE = "user_detail_supplement";
+    //user_detail_supplement真实数据节点，由数据源名 + 表名组成，以小数点分隔。只保存在management_0库，分表处理
+    public static final String USER_DETAIL_SUPPLEMENT_ACTUALDATANODES = "management_0.user_detail_supplement_${0..2}";
 
 }

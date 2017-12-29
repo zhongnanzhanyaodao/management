@@ -211,7 +211,11 @@ public class TestAction {
         truncate system_user_2;
         truncate system_user_3;
         truncate system_user_4;
-        truncate user_detail_supplement;*/
+        truncate user_detail_supplement;
+        truncate user_detail_supplement_0;
+        truncate user_detail_supplement_1;
+        truncate user_detail_supplement_2;
+      */
     }
 
 }
