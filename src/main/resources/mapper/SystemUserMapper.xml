@@ -27,11 +27,11 @@
         mobile,
         birthday,
         address
-        from management_system_user
+        from system_user
         where id = #{id}
     </select>
 
-    <select id="getSystemUserDoByMobile" resultMap="SystemUserDoMap" parameterType="java.math.BigInteger">
+    <select id="getSystemUserDoByMobile" resultMap="SystemUserDoMap" parameterType="java.lang.String">
         select
         id,
         gmt_create,
@@ -43,12 +43,12 @@
         mobile,
         birthday,
         address
-        from management_system_user
+        from system_user
         where mobile = #{mobile}
     </select>
 
     <insert id="saveSystemUserDo" parameterType="com.zydcompany.management.domain.model.SystemUserDo">
-        insert into management_system_user
+        insert into system_user
         (
         gmt_create,
         gmt_modified,
@@ -75,17 +75,36 @@
 
     </insert>
 
-    <!-- <update id="updateSystemUserDo" parameterType="map">-->
-    <update id="updateSystemUserDo">
-        update management_system_user
+    <!-- <update id="updateSystemUserDoById" parameterType="map">-->
+    <update id="updateSystemUserDoById">
+        update system_user
         <set>
             <if test="address != null">
-                address = #{address}
+                address = #{address},
             </if>
-            gmt_modified = #{gmt_modified}
+            gmt_modified = now()
         </set>
         where id =#{id}
     </update>
+
+    <update id="updateSystemUserDoByMobile">
+        update system_user
+        <set>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            gmt_modified = now()
+        </set>
+        where mobile =#{mobile}
+    </update>
+
+    <delete id="deleteSystemUserDoById">
+        delete from system_user where id =#{id}
+    </delete>
+
+    <delete id="deleteSystemUserDoByMobile">
+        delete from system_user where mobile =#{mobile}
+    </delete>
 
 
 </mapper>

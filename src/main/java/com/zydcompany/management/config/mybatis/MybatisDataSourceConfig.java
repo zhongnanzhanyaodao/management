@@ -1,6 +1,9 @@
 package com.zydcompany.management.config.mybatis;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.zydcompany.management.config.mybatis.sharding.CustomDataSourcePreciseShardingAlgorithm;
+import com.zydcompany.management.config.mybatis.sharding.CustomSystemUserTablePreciseShardingAlgorithm;
+import com.zydcompany.management.config.mybatis.sharding.ShardingConstant;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
 import io.shardingjdbc.core.api.ShardingDataSourceFactory;
 import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
@@ -23,15 +26,67 @@ import java.util.concurrent.ConcurrentHashMap;
 @Configuration
 public class MybatisDataSourceConfig {
 
+    /**
+     * 提供DataSource给MybatisBaseConfig使用
+     * <p>
+     * 注意:如果sql中不包含SHARDING_COLUMN,则会去遍历所有的库和表,因此强制所有sql必须带唯一键SHARDING_COLUMN,否则会扩大影响范围。
+     * 采用分布式主键不会造成分表中的主键重复,能保证按主键操作数据的准确性,但是也会去遍历所有的库和表,性能下降.
+     * 禁止用存在分布式冲突情况的字段作为唯一键,这样操作会扩大影响范围。
+     *
+     * @return
+     * @throws SQLException
+     */
+    @Bean
+    public DataSource dataSource() throws SQLException {
+        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
+        //配置分片规则
+        shardingRuleConfig.getTableRuleConfigs().add(getSystemUserTableRuleConfiguration());
+        //配置分库策略
+        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.DATA_BASE_SHARDING_COLUMN, CustomDataSourcePreciseShardingAlgorithm.class.getName()));
+        //配置分表策略
+        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.SYSTEM_USER_SHARDING_COLUMN, CustomSystemUserTablePreciseShardingAlgorithm.class.getName()));
+        //配置其它信息如：显示sql
+        Properties properties = new Properties();
+        properties.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), ManagementPropertiesUtil.getManagementBasicPropertiesValue("sharding.sql.show"));
+        //获取数据源对象,返回给MybatisBaseConfig使用
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfig, new ConcurrentHashMap(), properties);
+        return dataSource;
+    }
 
-    public DataSource initOriginDataSource0() {
+    /**
+     * 配置分片规则
+     *
+     * @return
+     */
+    private TableRuleConfiguration getSystemUserTableRuleConfiguration() {
+        TableRuleConfiguration systemUserTableRuleConfig = new TableRuleConfiguration();
+        systemUserTableRuleConfig.setLogicTable(ShardingConstant.SYSTEM_USER_LOGICTABLE);
+        systemUserTableRuleConfig.setActualDataNodes(ShardingConstant.SYSTEM_USER_ACTUALDATANODES);
+        return systemUserTableRuleConfig;
+    }
+
+    /**
+     * 配置真实数据源
+     *
+     * @return
+     */
+    private Map<String, DataSource> createDataSourceMap() {
+        Map<String, DataSource> result = new HashMap<>();
+        //配置第一个真实数据源
+        result.put(ShardingConstant.DATA_BASE_ORIGIN_NAME_0, initOriginDataSource0());
+        //配置第二个真实数据源
+        result.put(ShardingConstant.DATA_BASE_ORIGIN_NAME_1, initOriginDataSource1());
+        return result;
+    }
+
+    private DataSource initOriginDataSource0() {
         String url = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.url.0");
         String userName = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.userName.0");
         String password = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.password.0");
         return getDruidDataSource(url, userName, password);
     }
 
-    public DataSource initOriginDataSource1() {
+    private DataSource initOriginDataSource1() {
         String url = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.url.1");
         String userName = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.userName.1");
         String password = ManagementPropertiesUtil.getDatasourcePropertiesValue("dataSource.jdbc.password.1");
@@ -83,50 +138,6 @@ public class MybatisDataSourceConfig {
         dataSource.setTimeBetweenEvictionRunsMillis(Long.parseLong(timeBetweenEvictionRunsMillis));
         dataSource.setMinEvictableIdleTimeMillis(Long.parseLong(minEvictableIdleTimeMillis));
         dataSource.setValidationQuery(validationQuery);
-        return dataSource;
-    }
-
-
-    @Bean
-    public DataSource dataSource() throws SQLException {
-        // 配置真实数据源
-        Map<String, DataSource> dataSourceMap = new HashMap<>();
-
-        // 配置第一个数据源
-        DataSource dataSource1 = initOriginDataSource0();
-        dataSourceMap.put("management_0", dataSource1);
-
-        // 配置第二个数据源
-        DataSource dataSource2 = initOriginDataSource1();
-        dataSourceMap.put("management_1", dataSource2);
-
-        // 配置management_system_user表规则
-//        TableRuleConfiguration managementSystemUserTableRuleConfig = new TableRuleConfiguration();
-//        orderTableRuleConfig.setLogicTable("t_order");
-//        orderTableRuleConfig.setActualDataNodes("db0.t_order_0, db0.t_order_1, db1.t_order_0, db1.t_order_1");
-//
-//
-//        ShardingRuleConfiguration managementSystemUserTableRuleConfig = new ShardingRuleConfiguration();
-//        managementSystemUserTableRuleConfig.getTableRuleConfigs().setLogicTable("management_system_user");
-//        managementSystemUserTableRuleConfig.setActualDataNodes("management_${0..1}.management_system_user_${0..4}");
-//
-//        // 配置分库策略
-//        managementSystemUserTableRuleConfig.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("mobile", "com.zydcompany.management.config.mybatis.sharding.CustomDataSourcePreciseShardingAlgorithm"));
-//
-//        // 配置分表策略
-//        managementSystemUserTableRuleConfig.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("mobile", "com.zydcompany.management.config.mybatis.sharding.CustomTablePreciseShardingAlgorithm"));
-//
-//        // 配置分片规则
-//        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-//        shardingRuleConfig.getTableRuleConfigs().add(managementSystemUserTableRuleConfig);
-
-        // 省略配置其它表规则...
-
-        // 获取数据源对象
-        Properties properties = new Properties();
-        properties.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), "true");//显示sql
-        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, new ConcurrentHashMap(), properties);
-
         return dataSource;
     }
 }

@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigInteger;
-
 /**
  * 请求入参统一为json格式，否则不能打印入参信息
  */
@@ -55,12 +53,20 @@ public class TestAction {
         return PlatformResponse.builder().data(jsonData).build();
     }
 
-    @RequestMapping("/testDb")
-    public PlatformResponse testDb() {
-        log.info("testDb...");
-        SystemUserDo systemUserDo = systemUserService.getSystemUserDoById(BigInteger.valueOf(1));
-        log.info("testDb systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
-        return PlatformResponse.builder().data(systemUserDo).build();
+    /*@RequestMapping("/testGetUserById")
+    public PlatformResponse testGetUserById(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testGetUserById... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoById(systemUserDo.getId());
+        log.info("testGetUserById systemUserDoFromDb={}", FastJSONHelper.serialize(systemUserDo));
+        return PlatformResponse.builder().data(systemUserDoFromDb).build();
+    }*/
+
+    @RequestMapping("/testGetUserByMobile")
+    public PlatformResponse testGetUser(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testGetUser... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoByMobile(systemUserDo.getMobile());
+        log.info("testGetUser systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        return PlatformResponse.builder().data(systemUserDoFromDb).build();
     }
 
     @RequestMapping("/testSaveUser")
@@ -71,12 +77,34 @@ public class TestAction {
         return PlatformResponse.builder().data(systemUserDoFromDb).build();
     }
 
-    @RequestMapping("/testUpdateUser")
-    public PlatformResponse testUpdateUser(@RequestBody SystemUserDo systemUserDo) {
-        log.info("testSaveUser... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
-        systemUserService.updateSystemUserDo(systemUserDo.getId(), systemUserDo.getAddress());
-        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoById(systemUserDo.getId());
-        return PlatformResponse.builder().data(systemUserDoFromDb).build();
+   /* @RequestMapping("/testUpdateUserById")
+    public PlatformResponse testUpdateUserById(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testUpdateUserById... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        systemUserService.updateSystemUserDoById(systemUserDo.getId(), systemUserDo.getAddress());
+//        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoById(systemUserDo.getId());
+        return PlatformResponse.builder().build();
+    }*/
+
+    @RequestMapping("/testUpdateUserByMobile")
+    public PlatformResponse testUpdateUserByMobile(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testUpdateUserByMobile... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        systemUserService.updateSystemUserDoByMobile(systemUserDo.getMobile(), systemUserDo.getAddress());
+//        SystemUserDo systemUserDoFromDb = systemUserService.getSystemUserDoById(systemUserDo.getId());
+        return PlatformResponse.builder().build();
+    }
+
+ /*   @RequestMapping("/testDeleteUserById")
+    public PlatformResponse testDeleteUserById(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testDeleteUserById... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        systemUserService.deleteSystemUserDoById(systemUserDo.getId());
+        return PlatformResponse.builder().build();
+    }*/
+
+    @RequestMapping("/testDeleteUserByMobile")
+    public PlatformResponse testDeleteUserByMobile(@RequestBody SystemUserDo systemUserDo) {
+        log.info("testDeleteUserByMobile... systemUserDo={}", FastJSONHelper.serialize(systemUserDo));
+        systemUserService.deleteSystemUserDoByMobile(systemUserDo.getMobile());
+        return PlatformResponse.builder().build();
     }
 
     @RequestMapping("/testBaseException")
@@ -165,11 +193,11 @@ public class TestAction {
     }
 
     public static void main(String[] args) {
-       /* truncate management_system_user_0;
-        truncate management_system_user_1;
-        truncate management_system_user_2;
-        truncate management_system_user_3;
-        truncate management_system_user_4;*/
+       /* truncate system_user_0;
+        truncate system_user_1;
+        truncate system_user_2;
+        truncate system_user_3;
+        truncate system_user_4;*/
     }
 
 }
