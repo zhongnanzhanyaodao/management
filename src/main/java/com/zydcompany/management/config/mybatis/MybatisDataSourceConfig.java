@@ -62,7 +62,7 @@ public class MybatisDataSourceConfig {
         systemUserTableRuleConfig.setLogicTable(ShardingConstant.SYSTEM_USER_LOGICTABLE);
         systemUserTableRuleConfig.setActualDataNodes(ShardingConstant.SYSTEM_USER_ACTUALDATANODES);
         //配置SystemUserTable的分库策略,因为actualDataNodes配置了多个库，不配置分库策略,则多个库都会执行sql
-        systemUserTableRuleConfig.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.DATA_BASE_SHARDING_COLUMN, CustomDataSourcePreciseShardingAlgorithm.class.getName()));
+        systemUserTableRuleConfig.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.SYSTEM_USER_DATA_BASE_SHARDING_COLUMN, CustomDataSourcePreciseShardingAlgorithm.class.getName()));
         //配置SystemUserTable的分表策略,因为actualDataNodes配置了多个表，不配置分表策略,则多个表都会执行sql
         systemUserTableRuleConfig.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration(ShardingConstant.SYSTEM_USER_SHARDING_COLUMN, CustomSystemUserTablePreciseShardingAlgorithm.class.getName()));
         return systemUserTableRuleConfig;
