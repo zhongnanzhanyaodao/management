@@ -53,7 +53,7 @@ public class MybatisDataSourceConfig {
     }
 
     /**
-     * 配置SystemUserTable分片规则
+     * 配置SystemUser表分片规则
      *
      * @return
      */
@@ -69,7 +69,7 @@ public class MybatisDataSourceConfig {
     }
 
     /**
-     * 配置UserDetailSupplement分片规则
+     * 配置UserDetailSupplement表分片规则
      *
      * @return
      */
