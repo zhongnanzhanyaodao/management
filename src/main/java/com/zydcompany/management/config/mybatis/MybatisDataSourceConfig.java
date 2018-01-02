@@ -40,9 +40,11 @@ public class MybatisDataSourceConfig {
     @Bean
     public DataSource dataSource() throws SQLException {
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        //配置分片规则,每张表配置一个
+        //配置分片规则,需要分库分表的表每张表配置一个分片规则
         shardingRuleConfig.getTableRuleConfigs().add(getSystemUserTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getUserDetailSupplementTableRuleConfiguration());
+        //默认数据源名称，未配置分片规则的表将通过默认数据源定位。即不需要分库分表的表统一在ShardingConstant.DATA_BASE_ORIGIN_NAME_0上处理
+        shardingRuleConfig.setDefaultDataSourceName(ShardingConstant.DATA_BASE_ORIGIN_NAME_0);
         //不配置全局分库分表策略,在特定的表中定制各自的分库分表策略
         //配置其它信息如：显示sql
         Properties properties = new Properties();
