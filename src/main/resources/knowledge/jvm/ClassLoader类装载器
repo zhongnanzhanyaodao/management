@@ -41,3 +41,5 @@ JVM装载类时使用全盘负责委托机制
 Class没有public的构造方法。
 Class对象是在装载类时由JVM通过调用类装载器中的defineClass方法来自动构造的。
 
+参考：《精通spring4.x企业应用开发实战》
+
