@@ -12,7 +12,7 @@ JVM在运行时会产生三个ClassLoader：根装载器、ExtClassLoader（扩�
 根装载器：不是ClassLoader的子类，由于他是使用C++来编写的，因此在JAVA中看不到他。根装载器来复制装载jre的核心类库，如jre目标下的rt.jar、charsets.jar等。
 ExtClassLoader：是ClassLoader的子类，负责装载jre扩展目录ext中的jar类包
 AppClassLoader:是ClassLoader的子类，负责装载classpath路径下的类
-这三个装载器之间存在着父子层级的关系：
+这三个装载器之间存在着父子层级的关系：(注意：ExtClassLoader和AppClassLoader类不是继承和被继承关系)
 根装载器是ExtClassLoader的父装载器，而ExtClassLoader是AppClassLoader的父装载器。
 在默认情况下使用AppClassLoader装载应用程序的类。
 
