@@ -10,9 +10,15 @@ server:
 #security.user.password 默认的用户密码
 security:
   basic:
-  enabled: true
+     enabled: true
      path: /autoconfig,/configprops,/beans,/dump,/env,/health,/info,/mappings,/metrics,/shutdown,/trace,/loggers
   user:
      name: @user.security.name@
      password: @user.security.password@
+#/health和/info 需要将敏感开关设置为true,否则鉴权拦截那里配置没有用
+endpoints:
+    health:
+        sensitive: true
+    info:
+        sensitive: true
 
