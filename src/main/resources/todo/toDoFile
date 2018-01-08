@@ -16,6 +16,7 @@
 16、GUAVA
 17、JDK文档
 18、class文件被加载后各部分是怎么在jvm中分配的
+19、proxy,通过zk发现服务,负载均衡
 
 https://www.jianshu.com/p/c7f47de2ee80
 https://www.jianshu.com/p/10584345b10a
