@@ -6,6 +6,7 @@ import com.zydcompany.management.filter.proxy.HttpProxyHelper;
 import com.zydcompany.management.filter.proxy.ServiceUrlInfo;
 import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-
+@Component
 public class ManagementFilter implements Filter {
 
     private static final ManagementLogUtil log = ManagementLogUtil.getLogger();
@@ -33,8 +34,6 @@ public class ManagementFilter implements Filter {
 
         //转发请求
         proxyRequest(request, response);
-
-        return;
     }
 
 
