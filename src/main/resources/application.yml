@@ -15,7 +15,7 @@ security:
   user:
      name: @user.security.name@
      password: @user.security.password@
-#/health和/info 需要将敏感开关设置为true,否则鉴权拦截那里配置没有用
+#/health和/info 需要将敏感开关设置为true,否则鉴权拦截那里配置这两个path没有用
 endpoints:
     health:
         sensitive: true
