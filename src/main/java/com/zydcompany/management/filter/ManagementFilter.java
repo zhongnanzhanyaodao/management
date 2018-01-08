@@ -37,7 +37,7 @@ public class ManagementFilter implements Filter {
             return;
         }
 
-        chain.doFilter(servletRequest, servletResponse);
+        chain.doFilter(request, response);
 
     }
 
