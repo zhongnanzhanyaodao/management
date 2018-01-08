@@ -5,6 +5,7 @@ import com.zydcompany.management.exception.message.BaseExceptionMsg;
 import com.zydcompany.management.filter.proxy.DiscoveryRequestWrapper;
 import com.zydcompany.management.filter.proxy.HttpProxyHelper;
 import com.zydcompany.management.filter.proxy.ServiceUrlInfo;
+import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class ManagementFilter implements Filter {
         String uri = getUri(request);
         log.info("ManagementFilter proxyRequest uri={}", uri);
         ServiceUrlInfo urlDto = parseServiceName(uri);
-        log.info("ManagementFilter proxyRequest ServiceUrlInfo={}", urlDto);
+        log.info("ManagementFilter proxyRequest ServiceUrlInfo={}", FastJSONHelper.serialize(urlDto));
 
         //组装转发url
         String proxyUrl = buildProxyUrl(ManagementPropertiesUtil.getManagementBasicPropertiesValue("proxy.host"), urlDto);
