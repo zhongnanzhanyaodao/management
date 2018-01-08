@@ -8,5 +8,6 @@ public class BaseExceptionMsg {
     public static String FAIL_MSG = "Sorry,serivce error.Please try again later";
     public static Integer PRECONDITIONS_FAIL_CODE = 2;
     public static String PRECONDITIONS_FAIL_MSG = "preconditions fail";
+    public static String OPEN_URL_ERROR_MSG = "url not open";
 
 }

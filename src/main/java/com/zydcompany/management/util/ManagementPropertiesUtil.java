@@ -1,5 +1,6 @@
 package com.zydcompany.management.util;
 
+import java.util.Collection;
 import java.util.Properties;
 
 
@@ -19,6 +20,8 @@ public class ManagementPropertiesUtil {
     private static final String zookeeperFileName = "zookeeper.properties";
     private static Properties threadProperties;
     private static final String threadFileName = "thread.properties";
+    private static Properties openUrlProperties;
+    private static final String openUrlFileName = "openUrl.properties";
 
     static {
 
@@ -28,6 +31,7 @@ public class ManagementPropertiesUtil {
         ssdbProperties = new Properties();
         zookeeperProperties = new Properties();
         threadProperties = new Properties();
+        openUrlProperties = new Properties();
 
         try {
             managementBasicProperties.load(ClassLoader.getSystemResourceAsStream(managementBasicFileName));
@@ -42,6 +46,8 @@ public class ManagementPropertiesUtil {
             log.info("初始化zookeeper.properties成功");
             threadProperties.load(ClassLoader.getSystemResourceAsStream(threadFileName));
             log.info("初始化thread.properties成功");
+            openUrlProperties.load(ClassLoader.getSystemResourceAsStream(openUrlFileName));
+            log.info("初始化openUrl.properties成功");
         } catch (Exception e) {
             log.info("ManagementPropertiesUtil初始化失败", e);
         }
@@ -69,6 +75,10 @@ public class ManagementPropertiesUtil {
 
     public static String getThreadPropertiesValue(String key) {
         return threadProperties.getProperty(key);
+    }
+
+    public static Collection<Object> getOpenUrlPropertiesValues() {
+        return openUrlProperties.values();
     }
 
     //=====================================reload when file change========================================
