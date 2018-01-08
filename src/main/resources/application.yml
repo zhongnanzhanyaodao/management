@@ -3,8 +3,16 @@ server:
   port: 8066
   contextPath: /management
 
-#忽略权限拦截
+#鉴权拦截
+#security.basic.enabled 是否开启基本的鉴权，默认为true
+#security.basic.path 需要鉴权的path，多个的话以逗号分隔，默认为[/**]
+#security.user.name 指定默认的用户名，默认为user
+#security.user.password 默认的用户密码
 security:
   basic:
-    enabled: false
+  enabled: true
+     path: /autoconfig,/configprops,/beans,/dump,/env,/health,/info,/mappings,/metrics,/shutdown,/trace,/loggers
+  user:
+     name: @user.security.name@
+     password: @user.security.password@
 
