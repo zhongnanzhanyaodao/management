@@ -34,7 +34,10 @@ public class ManagementFilter implements Filter {
         if (ManagementPropertiesUtil.getProxyUrlPropertiesValues().contains(request.getRequestURI())) {
             log.info("ManagementFilter doFilter proxy uri={}", request.getRequestURI());
             proxyRequest(request, response);
+            return;
         }
+
+        chain.doFilter(servletRequest, servletResponse);
 
     }
 
