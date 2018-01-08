@@ -2,9 +2,7 @@ package com.zydcompany.management.filter.proxy;
 
 
 import com.google.common.base.Strings;
-import com.zydcompany.management.exception.message.BaseExceptionMsg;
 import com.zydcompany.management.util.ManagementLogUtil;
-import com.zydcompany.management.util.ManagementPropertiesUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 
@@ -37,15 +35,9 @@ public class HttpProxyHelper {
         try {
             String url = request.getRequestURI();
             if (Strings.isNullOrEmpty(url)) return false;
-            if (ManagementPropertiesUtil.getOpenUrlPropertiesValues().contains(url)) {
-                log.info("HttpProxyHelper uriPass input url={}", url);
-                HttpProxyHelper.handleHttpErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, request.getRequestURI(),
-                        BaseExceptionMsg.OPEN_URL_ERROR_MSG, BaseExceptionMsg.OPEN_URL_ERROR_MSG, BaseExceptionMsg.OPEN_URL_ERROR_MSG);
-                return false;
-            }
             return true;
         } catch (Exception e) {
-            log.error("HttpProxyUtil urlPass error targetUrl={} error={}", request.getRequestURI(), e.getMessage());
+            log.error("HttpProxyUtil urlPass Exception targetUrl={} error={}", request.getRequestURI(), e.getMessage());
         }
         return false;
     }
@@ -58,10 +50,9 @@ public class HttpProxyHelper {
      * @param targetUrl 目标地址Url
      */
     public static void proxyRequest(HttpServletRequest request, HttpServletResponse response, String targetUrl) {
-        log.info("HttpProxyHelper targetUrl={}", targetUrl);
+        log.info("HttpProxyHelper proxyRequest targetUrl={}", targetUrl);
         // url是否可以通过
         if (!urlPass(request, response)) return;
-
 
         // 拼装url和参数
         targetUrl = parseUrlAndArgs(request, targetUrl);
@@ -89,17 +80,17 @@ public class HttpProxyHelper {
             targetUrl = sb.toString();
         }
 
-        log.info("HttpProxyHelper After Parse targetUrl={}", targetUrl);
+        log.info("HttpProxyHelper proxyRequest after parse targetUrl={}", targetUrl);
 
         try {
             URL url = new URL(targetUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             String method = request.getMethod().toUpperCase();
             conn.setRequestMethod(method);
-            log.info("HttpProxyHelper request method={}", conn.getRequestMethod());
+            log.info("HttpProxyHelper proxyRequest request method={}", conn.getRequestMethod());
             //默认超时时间
             conn.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(10));
-            log.info("HttpProxyHelper ConnectTimeout(Millis)={}", conn.getConnectTimeout());
+            log.info("HttpProxyHelper proxyRequest connectTimeout(Millis)={}", conn.getConnectTimeout());
 
             //TODO: 暂不支持长连接，后期处理
             // 处理request请求头
@@ -146,7 +137,7 @@ public class HttpProxyHelper {
             //请求状态
             int responseCode = conn.getResponseCode();
             response.setStatus(responseCode);
-            log.info("HttpProxyHelper responseCode={}", responseCode);
+            log.info("HttpProxyHelper proxyRequest responseCode={}", responseCode);
 
             //处理response请求头
             Map<String, String> httpResponseHeader = getHttpResponseHeader(conn);
@@ -160,13 +151,13 @@ public class HttpProxyHelper {
                 try (ServletOutputStream outputStream = response.getOutputStream(); InputStream inputStream = conn.getInputStream()) {
                     IOUtils.copy(inputStream, outputStream);
                 }
-                log.info("HttpProxyHelper Success");
+                log.info("HttpProxyHelper proxyRequest Success");
             } else {
                 //处理失败请求体
                 try (ServletOutputStream outputStream = response.getOutputStream(); InputStream inputStream = conn.getErrorStream()) {
                     IOUtils.copy(inputStream, outputStream);
                 }
-                log.info("HttpProxyHelper Failed");
+                log.info("HttpProxyHelper proxyRequest Failed");
             }
         } catch (IOException e) {
             log.error("HttpProxyHelper proxyRequest Exception", e);

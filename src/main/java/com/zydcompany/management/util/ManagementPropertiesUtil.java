@@ -20,8 +20,8 @@ public class ManagementPropertiesUtil {
     private static final String zookeeperFileName = "zookeeper.properties";
     private static Properties threadProperties;
     private static final String threadFileName = "thread.properties";
-    private static Properties openUrlProperties;
-    private static final String openUrlFileName = "openUrl.properties";
+    private static Properties proxyUrlProperties;
+    private static final String proxyUrlFileName = "proxyUrl.properties";
 
     static {
 
@@ -31,7 +31,7 @@ public class ManagementPropertiesUtil {
         ssdbProperties = new Properties();
         zookeeperProperties = new Properties();
         threadProperties = new Properties();
-        openUrlProperties = new Properties();
+        proxyUrlProperties = new Properties();
 
         try {
             managementBasicProperties.load(ClassLoader.getSystemResourceAsStream(managementBasicFileName));
@@ -46,8 +46,8 @@ public class ManagementPropertiesUtil {
             log.info("初始化zookeeper.properties成功");
             threadProperties.load(ClassLoader.getSystemResourceAsStream(threadFileName));
             log.info("初始化thread.properties成功");
-            openUrlProperties.load(ClassLoader.getSystemResourceAsStream(openUrlFileName));
-            log.info("初始化openUrl.properties成功");
+            proxyUrlProperties.load(ClassLoader.getSystemResourceAsStream(proxyUrlFileName));
+            log.info("初始化proxyUrl.properties成功");
         } catch (Exception e) {
             log.info("ManagementPropertiesUtil初始化失败", e);
         }
@@ -77,8 +77,8 @@ public class ManagementPropertiesUtil {
         return threadProperties.getProperty(key);
     }
 
-    public static Collection<Object> getOpenUrlPropertiesValues() {
-        return openUrlProperties.values();
+    public static Collection<Object> getProxyUrlPropertiesValues() {
+        return proxyUrlProperties.values();
     }
 
     //=====================================reload when file change========================================

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceUrlInfo {
+
     private String serviceName;
     private String serviceSuffixUrl;
 }
