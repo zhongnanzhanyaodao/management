@@ -12,16 +12,16 @@ APP_NAME=management
 APP_MAIN=com.zydcompany.management.ManagementApplication
 #JDK路径
 JAVA_HOME="/usr/lib/jvm/java"
-#脚本路径
-SCRIPT_DIR=/data/webapps/management/management-1.0/script
 #部署路径
 DEPLOY_DIR=/data/webapps/management/management-1.0
+#脚本路径
+SCRIPT_DIR=$DEPLOY_DIR/script
 #配置文件路径
-CONF_DIR=/data/webapps/management/management-1.0/conf
+CONF_DIR=$DEPLOY_DIR/conf
 #jar包路径
-LIB_DIR=/data/webapps/management/management-1.0/lib
+LIB_DIR=$DEPLOY_DIR/lib
 #监控路径
-MONITOR_DIR=/data/webapps/management/management-1.0/script/monitor
+MONITOR_DIR=$DEPLOY_DIR/script/monitor
 #全jar包
 LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
 #java内存参数
