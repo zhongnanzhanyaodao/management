@@ -31,7 +31,7 @@ public class ManagementFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
         //是否需要转发请求
         if (ManagementPropertiesUtil.getProxyUrlPropertiesValues().contains(request.getRequestURI())) {
-            log.info("HttpProxyHelper doFilter proxy uri={}", request.getRequestURI());
+            log.info("ManagementFilter doFilter proxy uri={}", request.getRequestURI());
             proxyRequest(request, response);
         }
 
