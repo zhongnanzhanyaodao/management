@@ -1,3 +1,6 @@
+依赖抽象而不是依赖具体。
+Context依赖抽象的Strategy。
+
 //StrategyExample test application
 
 class StrategyExample {
