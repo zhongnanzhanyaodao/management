@@ -1,0 +1,5 @@
+Servlet体系结构是建立在 Java 多线程机制上的，它的生命周期由 Web 容器负责。
+当客户端第一次请求某个 Servlet 时，Servlet 容器将会根据 web.xml 的配置文件实例化这个 Servlet 类。
+当有新的客户端请求该 Servlet 时，一般不会再实例化该 Servlet 类。
+当有多个请求时，Servlet 容器会起多个线程来访问同一个 Servlet 实例的 service() 方法，
+如果该 Servlet 实例中有共享的实例变量，需要注意多线程安全问题。
