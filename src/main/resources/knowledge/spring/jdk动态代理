@@ -1,0 +1,14 @@
+jdk动态代理技术，允许开发者在运行期创建 接口 的代理实例。
+
+JDK的动态代理主要涉及到java.lang.reflect包中的两个类：Proxy和InvocationHandler。
+其中 InvocationHandler是一个接口，可以通过实现该接口定义横切逻辑，在并通过反射机制调用目标类的代码，动态将横切逻辑和业务逻辑编织在一起。
+而Proxy利用InvocationHandler动态创建一个符合某一接口的实例，生成目标类的代理对象。
+
+InvocationHandler的
+public Object invoke(Object proxy, Method method, Object[] args)
+        throws Throwable;
+其中proxy是最终生成的代理实例，一般不会用到；
+method是被代理目标实例的某个具体方法，通过它可以发起目标实例方法的反射调用；
+args是被代理实例的某个方法的入参，在方法反射调用时使用
+
+
