@@ -41,8 +41,13 @@ public class SsdbPool {
         config.maxWait = maxWait;
         config.testWhileIdle = testWhileIdle;
         config.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
-        PoolSSDBStream poolSSDBStream = Pools.pool(host, port, timeout, config, null);
-        poolSSDBStreamMap.put(poolName, poolSSDBStream);
+
+        //防止并发问题,保证只实例化一个连接池
+        if (!poolSSDBStreamMap.containsKey(poolName)) {
+            PoolSSDBStream poolSSDBStream = Pools.pool(host, port, timeout, config, null);
+            poolSSDBStreamMap.put(poolName, poolSSDBStream);
+            log.info("init real PoolSSDBStream successful");
+        }
         log.info("init PoolSSDBStream successful");
     }
 

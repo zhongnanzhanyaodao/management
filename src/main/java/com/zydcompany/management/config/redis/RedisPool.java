@@ -68,9 +68,13 @@ public class RedisPool {
         config.setTestWhileIdle(testWhileIdle);
         config.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
 
-        JedisPool jedisPool = new JedisPool(config, host, port, timeout, password, database);
-        jedisPoolMap.put(poolName, jedisPool);
-        log.info("init initJedisPool successful");
+        //防止并发问题,保证只实例化一个连接池
+        if (!jedisPoolMap.containsKey(poolName)) {
+            JedisPool jedisPool = new JedisPool(config, host, port, timeout, password, database);
+            jedisPoolMap.put(poolName, jedisPool);
+            log.info("init real jedisPool successful");
+        }
+        log.info("init jedisPool successful");
 
     }
 }
