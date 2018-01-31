@@ -134,6 +134,9 @@ select和poll都需要在返回后，通过遍历文件描述符来获取已经�
 
 ##epoll
 epoll是在2.6内核中提出的，是之前的select和poll的增强版本。
+相对于select和poll来说，epoll更加灵活，没有描述符限制。
+epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。
+
 epoll对文件描述符的操作有两种模式：LT（level trigger）和ET（edge trigger）。
 LT模式是默认模式，LT模式与ET模式的区别如下：
 　　LT模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，会再次响应应用程序并通知此事件。
