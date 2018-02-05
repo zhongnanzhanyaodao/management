@@ -214,3 +214,6 @@ CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持�
     Content-Type: text/html; charset=utf-8
 
 上面头信息中，Access-Control-Allow-Origin字段是每次回应都必定包含的。
+
+参考文档：
+http://www.ruanyifeng.com/blog/2016/04/cors.html
