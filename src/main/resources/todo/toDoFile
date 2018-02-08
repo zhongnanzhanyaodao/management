@@ -1,4 +1,3 @@
-1、ThreadPoolExecutor
 2、Unsafe与CAS
 3、整个多线程体系
 4、Synchronized 为什么jdk1.5后性能提高了
@@ -6,20 +5,19 @@
 6、hashMap的一切
 7、ca证书
 8、disconf源码
-9、top命令
-10、redis、zookeeper的配置解读和集群搭建
-11、sharding-jdbc 源码
-12、nginx.conf
-13、纯前后端分离实现交互
-14、java字节码分析
-15、mysql主从同步
-16、GUAVA
-17、JDK文档
-18、class文件被加载后各部分是怎么在jvm中分配的
-19、proxy代码理解审查,为什么用DiscoveryRequestWrapper,以及通过zk发现服务,负载均衡
-20、xml schema 教程 http://www.w3school.com.cn/schema/index.asp
+9、redis、zookeeper的配置解读和集群搭建
+10、sharding-jdbc 源码
+11、nginx.conf
+12、纯前后端分离实现交互
+13、java字节码分析
+14、mysql主从同步
+15、GUAVA
+16、JDK文档
+17、class文件被加载后各部分是怎么在jvm中分配的
+18、proxy代码理解审查,为什么用DiscoveryRequestWrapper,以及通过zk发现服务,负载均衡
+19、xml schema 教程 http://www.w3school.com.cn/schema/index.asp
 DTD教程 http://www.w3school.com.cn/dtd/index.asp
-21、Swap交换分区
+
 
 
 一、算法
