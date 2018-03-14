@@ -34,4 +34,5 @@ redis，zookeeper，mybatis，kafka，图算法，搜索引擎，以及其他招
 九、redis
 十、微服务springcloud
 十一、zookeeper
-十二、dubbo
+十二、消息中间件如kafka等
+十三、dubbo
