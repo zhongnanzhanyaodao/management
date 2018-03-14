@@ -1,0 +1,57 @@
+前提条件
+目前，CentOS 仅发行版本中的内核支持 Docker。
+Docker 运行在 CentOS 7 上，要求系统为64位、系统内核版本为 3.10 以上。
+Docker 运行在 CentOS-6.5 或更高的版本的 CentOS 上，要求系统为64位、系统内核版本为 2.6.32-431 或者更高版本。
+
+通过 uname -r 命令查看你当前的内核版本
+[root@name ~]# uname -r
+2.6.32-696.16.1.el6.x86_64
+
+
+
+1、配置Fedora EPEL 源
+
+由于CentOS 6.x与7.x安装docker是有一些不同的，CentOS 6.x上docker的安装包叫docker-io，来源于Fedora epel库，
+这个仓库维护了大量的没有包含在发行版中的软件，所以先要安装EPEL，
+而CentOS 7.x的docker直接包含在官方镜像源的Extras仓库（CentOS-Base.repo下的[extras]节enable=1启用）
+
+yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+2、安装 docker-io
+
+yum install -y docker-io
+
+3、启动docker
+
+service docker start
+
+4、查看docker版本
+
+docker version
+
+5、执行docker hello-world
+
+#拉取 hello-world 镜像
+docker pull hello-world
+#执行 hello-world
+docker run hello-world
+
+为了生成此消息，Docker采取了以下步骤：
+ 1. Docker客户端联系了Docker守护进程。
+ 2. Docker守护进程从Docker Hub中提取“hello-world”镜像
+ 3. Docker守护进程从该镜像创建了一个新的容器，该容器运行可执行文件，生成您当前正在阅读的输出。
+ 4. Docker守护进程将输出流式传输到Docker客户端。
+
+6、卸载docker
+
+如果要卸载docker，也非常简单，查看docker安装包
+
+yum list installed | grep docker
+
+然后删除安装包
+
+yum -y remove docker-io.x86_64
+
+删除镜像或容器
+
+rm -rf /var/lib/docker
