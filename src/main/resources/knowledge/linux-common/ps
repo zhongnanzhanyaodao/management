@@ -1,0 +1,30 @@
+ps -ef
+
+UID PID PPID C STIME TTY TIME CMD
+各相关信息的意义：
+
+UID 程序被该 UID 所拥有
+
+PID 就是这个程序的 ID
+
+PPID 则是其上级父程序的ID
+
+C CPU 使用的资源百分比
+
+STIME 系统启动时间
+
+TTY 登入者的终端机位置
+
+TIME 使用掉的 CPU 时间。
+
+CMD 所下达的指令为何
+
+
+ps aux
+VSZ（虚拟内存大小KB）和RSS（常驻集大小KB）:
+VSZ表示如果一个程序完全驻留在内存的话需要占用多少内存空间;
+RSS指明了当前实际占用了多少内存;
+
+
+VSZ     該进程使用的虚拟內存量（KB）；
+RSS     該進程占用的固定內存量（KB）（驻留中页的数量）；
