@@ -11,7 +11,7 @@ https://tech.meituan.com/innodb-lock.html
 
 ###Repeatable Read（可重读）
 这是MySQL中InnoDB默认的隔离级别。
-MySQL、ORACLE、PostgreSQL等成熟的数据库，出于性能考虑，都是使用了以乐观锁为理论基础的MVCC（多版本并发控制）来避免不可重复读和幻读。
+MySQL、ORACLE、PostgreSQL等成熟的数据库，出于性能考虑，都是使用了以乐观锁为理论基础的MVCC（多版本并发控制）来避免不可重复读和幻读（Next-Key锁解决幻读问题）。
 
 #悲观锁
 在悲观锁的情况下，为了保证事务的隔离性，就需要一致性锁定读。读取数据时给加锁，其它事务无法修改这些数据。修改删除数据时也要加锁，其它事务无法读取这些数据。
