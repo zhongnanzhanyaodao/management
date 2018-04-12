@@ -36,7 +36,7 @@ class PrintABCUsingSemaphore {
         for (int i = 0; i < 10; ) {
             try {
                 currentSemaphore.acquire();
-                System.out.println(Thread.currentThread().getName() +" print "+ name);
+                System.out.println(Thread.currentThread().getName() + " print " + name);
                 i++;
                 nextSemaphore.release();
             } catch (InterruptedException e) {
