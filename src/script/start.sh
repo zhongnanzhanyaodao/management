@@ -25,7 +25,7 @@ MONITOR_DIR=$DEPLOY_DIR/script/monitor
 #全jar包
 LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
 #java内存参数
-JAVA_MEM_OPTS=" -server -Xms200m -Xmx200m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$DEPLOY_DIR/gc.hprof -XX:+UseParallelOldGC -XX:+DisableExplicitGC "
+JAVA_MEM_OPTS=" -server -Xms200m -Xmx200m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$DEPLOY_DIR/gc.hprof -XX:+UseParallelOldGC "
 
 #递归创建监控目录
 mkdir -p "$MONITOR_DIR/"
