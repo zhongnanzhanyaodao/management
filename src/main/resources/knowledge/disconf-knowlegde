@@ -29,3 +29,5 @@ PEERNTP=no
 vim /etc/hosts
 -----------------------------------------------
 在127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 后加上 iZj6chcl8bs46q536go2o5Z 保存即可
+
+自定义的密码：666666
