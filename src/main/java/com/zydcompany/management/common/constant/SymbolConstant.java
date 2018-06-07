@@ -14,4 +14,6 @@ public class SymbolConstant {
     public static final String EQUALITY_SIGN = "=";
     public static final String INPUT_FLAG = "input";
     public static final String OUTPUT_FLAG = "output";
+    public static final String QUESTION_MARK = "?";
+    public static final String SERVEN_UP = "&";
 }

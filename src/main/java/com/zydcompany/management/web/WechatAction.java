@@ -1,8 +1,16 @@
 package com.zydcompany.management.web;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+import com.zydcompany.management.common.PlatformResponse;
+import com.zydcompany.management.config.redis.RedisServerFactory;
+import com.zydcompany.management.domain.dto.WechatAccessTokenDto;
+import com.zydcompany.management.exception.message.BaseExceptionMsg;
+import com.zydcompany.management.util.FastJSONHelper;
 import com.zydcompany.management.util.ManagementLogUtil;
 import com.zydcompany.management.util.ManagementPropertiesUtil;
+import com.zydcompany.management.util.RestTemplateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,12 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/wechat")
 public class WechatAction {
 
     private static final ManagementLogUtil log = ManagementLogUtil.getLogger();
+
+    @Autowired
+    RestTemplateUtil restTemplateUtil;
+
 
     /**
      * 验证微信后台配置的服务器地址的有效性
@@ -61,6 +74,37 @@ public class WechatAction {
             return null;
         }
     }
+
+    /**
+     * 获取access_token
+     *
+     * @return
+     */
+    @RequestMapping("/getAccessToken")
+    public PlatformResponse getAccessToken() {
+        log.info("getAccessToken...");
+        String accessTokenStr = RedisServerFactory.getRedisServer().getString("accessTokenStr", "getAccessToken");
+        if (!Strings.isNullOrEmpty(accessTokenStr)) {
+            WechatAccessTokenDto wechatAccessTokenDto = FastJSONHelper.deserialize(accessTokenStr, WechatAccessTokenDto.class);
+            return PlatformResponse.builder().data(wechatAccessTokenDto).build();
+        }
+        String accessTokenUrl = ManagementPropertiesUtil.getManagementBasicPropertiesValue("wechat.accessToken.url");
+        String appid = ManagementPropertiesUtil.getManagementBasicPropertiesValue("wechat.appid");
+        String secret = ManagementPropertiesUtil.getManagementBasicPropertiesValue("wechat.secret");
+        Map<String, String> requestParams = Maps.newHashMap();
+        requestParams.put("grant_type", "client_credential");
+        requestParams.put("appid", appid);
+        requestParams.put("secret", secret);
+        String respStr = restTemplateUtil.getByMap(accessTokenUrl, requestParams);
+        WechatAccessTokenDto wechatAccessTokenDto = FastJSONHelper.deserialize(respStr, WechatAccessTokenDto.class);
+        if (!Strings.isNullOrEmpty(wechatAccessTokenDto.getAccess_token())) {
+            //超时时间比外部系统小20分钟，保证从本系统获取的accessToken是有效的。外部系统为7200秒
+            RedisServerFactory.getRedisServer().setString("accessTokenStr", respStr, 6000, "getAccessToken");
+            return PlatformResponse.builder().data(wechatAccessTokenDto).build();
+        }
+        return PlatformResponse.builder().code(BaseExceptionMsg.FAIL_CODE).msg(BaseExceptionMsg.FAIL_MSG).build();
+    }
+
 
     /**
      * 排序方法
