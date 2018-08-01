@@ -1,0 +1,27 @@
+1、 Linux命令输出头（标题）
+
+在使用Linux命令时，如果命令中有管道“|”，则输出的信息中，头（标题）信息丢失，要想看每一列代表什么意思很不方便。
+
+这里有一个简单的办法，通过2条命令叠加，获取头和内容。例如ps auxw：
+
+$ ps axuw
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.2  37888  5952 ?        Ss   01:21   0:02 /sbin/init noprompt
+root         2  0.0  0.0      0     0 ?        S    01:21   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S    01:21   0:00 [ksoftirqd/0]
+root         5  0.0  0.0      0     0 ?        S<   01:21   0:00 [kworker/0:0H]
+
+再加上管道符后
+
+$ ps axuw | grep java
+faster    8502  0.0  0.0  12948   972 pts/1    S+   02:15   0:00 grep java
+
+可以看到头（标题）已经丢失。
+
+怎么显示标题呢，这有一个简单的办法：
+
+$ ps axuw | head -1;ps axuw | grep java
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+faster    8510  0.0  0.0  12948   940 pts/1    S+   02:17   0:00 grep java
+
+也就是先用命令本身加“| head -1”取到头(标题)，然后再使用该命令输出内容，两者叠加输出即得到所要结果。
