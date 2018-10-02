@@ -37,7 +37,7 @@ CentOS Linux release 7.3.1611 (Core)
 
   修改配置文件：
 
-  vi /etc/zabbix/zabbix_server.conf
+  vim /etc/zabbix/zabbix_server.conf
 
   DBHost=localhost
   DBName=zabbix
