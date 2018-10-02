@@ -75,4 +75,6 @@ http://IP/zabbix/
 
 将database host的localhost改成127.0.0.1
 
+chmod -R 777 /var/lib/mysql/
+
 默认用户名/密码：Admin/zabbix
