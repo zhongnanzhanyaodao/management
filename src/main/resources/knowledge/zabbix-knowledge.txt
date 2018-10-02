@@ -1,5 +1,6 @@
 https://www.linuxidc.com/Linux/2017-03/141716.htm
 https://blog.csdn.net/chinadm123/article/details/48969703
+https://www.howtoing.com/install-zabbix-agent-on-centos-rhel
 https://my.oschina.net/u/3331172/blog/1492891
 
 
