@@ -1,0 +1,3 @@
+显示文件过滤
+FILE -> SETTINGS -> FILE TYPES -> IGNORE FILES...下边是我过滤的类型,区分大小写的
+CVS;SCCS;RCS;rcs;.DS_Store;.svn;.pyc;.pyo;*.pyc;*.pyo;.git;*.hprof;_svn;.sbas;.IJI.*;vssver.scc;vssver2.scc;.*;*.iml;*.ipr;*.iws;*.ids
