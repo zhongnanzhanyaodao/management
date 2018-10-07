@@ -80,3 +80,28 @@ http://IP/zabbix/
 chmod -R 777 /var/lib/mysql/
 
 默认用户名/密码：Admin/zabbix
+
+
+
+########邮件配置
+https://www.cnblogs.com/yunweis/p/8149242.html
+
+
+mkdir /root/.certs
+echo -n | openssl s_client -connect smtp.163.com:465 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > ~/.certs/163.crt
+certutil -A -n "GeoTrust SSL CA" -t "C,," -d ~/.certs -i ~/.certs/163.crt
+certutil -A -n "GeoTrust Global CA" -t "C,," -d ~/.certs -i ~/.certs/163.crt
+certutil -L -d /root/.certs
+certutil -A -n "GeoTrust SSL CA - G3" -t "Pu,Pu,Pu" -d ./ -i 163.crt
+
+
+vim /etc/mail.rc
+set from=duanwaijun@163.com
+set smtp=smtps://smtp.163.com:465
+set smtp-auth-user=duanwaijun
+set smtp-auth-password=password
+set smtp-auth=login
+set ssl-verify=ignore
+set nss-config-dir=/root/.certs
+
+echo  test | mail -s " test"  262548405@qq.com
