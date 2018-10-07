@@ -105,3 +105,4 @@ set ssl-verify=ignore
 set nss-config-dir=/root/.certs
 
 echo  test | mail -s " test"  262548405@qq.com
+########邮件配置
