@@ -106,3 +106,5 @@ set nss-config-dir=/root/.certs
 
 echo  test | mail -s " test"  262548405@qq.com
 ########邮件配置
+https://blog.csdn.net/hao134838/article/details/57568332
+https://www.jianshu.com/p/9daaf8251068
