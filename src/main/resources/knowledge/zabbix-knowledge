@@ -110,6 +110,12 @@ https://blog.csdn.net/hao134838/article/details/57568332
 https://www.jianshu.com/p/9daaf8251068
 
 ##zabbix-agent
+centos7.3:
 systemctl start  zabbix-agent.service
 systemctl stop  zabbix-agent.service
 systemctl restart  zabbix-agent.service
+
+centos6.9
+/etc/init.d/zabbix-agent start
+/etc/init.d/zabbix-agent stop
+/etc/init.d/zabbix-agent restart
