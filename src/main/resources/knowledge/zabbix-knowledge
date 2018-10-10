@@ -108,3 +108,8 @@ echo  test | mail -s " test"  262548405@qq.com
 ########邮件配置
 https://blog.csdn.net/hao134838/article/details/57568332
 https://www.jianshu.com/p/9daaf8251068
+
+##zabbix-agent
+systemctl start  zabbix-agent.service
+systemctl stop  zabbix-agent.service
+systemctl restart  zabbix-agent.service
