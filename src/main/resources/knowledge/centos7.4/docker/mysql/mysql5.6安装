@@ -1,0 +1,19 @@
+docker search mysql
+
+docker pull mysql:5.6
+
+docker run -p 3306:3306 --name hk-mysql -e MYSQL_ROOT_PASSWORD=666666 -d mysql:5.6
+
+
+其它命令：
+
+docker inspect hk-mysql
+docker ps
+进入容器：docker exec -it hk-mysql  /bin/sh
+退出容器：Ctrl+D
+docker top hk-mysql
+docker logs hk-mysql
+docker start hk-mysql
+docker stop hk-mysql
+docker restart hk-mysql
+docker stats
