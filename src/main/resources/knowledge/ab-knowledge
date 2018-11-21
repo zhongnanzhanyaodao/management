@@ -1,0 +1,54 @@
+安装：
+yum -y install httpd-tools
+
+
+
+
+
+
+参考地址：https://blog.csdn.net/qq_16399991/article/details/56676780
+
+
+ab -n 全部请求数 -c 并发数 测试url
+例:ab -n 1000 -c 50 http://www.newdev.gztest.com/
+Server Software:         Microsoft-IIS/7.0
+Server Hostname:        www.newdev.gztest.com
+Server Port:            80
+Document Path:
+Document Length:        82522 bytes  #请求文档大小
+
+Concurrency Level:      50           #并发数
+Time taken for tests:   92.76140 seconds #全部请求完成耗时
+Complete requests:      10000          #全部请求数
+Failed requests:        1974           #失败的请求
+  (Connect: 0, Length: 1974, Exceptions: 0)
+Write errors:           0
+Total transferred:      827019400 bytes   #总传输大小
+HTML transferred:       825219400 bytes //整个场景中的HTML内容传输量
+Requests per second:    108.61 [#/sec] (mean)   #每秒请求数(平均)//大家最关心的指标之一，相当于 LR 中的每秒事务数，后面括号中的 mean 表示这是一个平均值
+Time per request:       460.381 [ms] (mean)   #每次并发请求时间(所有并发) //大家最关心的指标之二，相当于 LR 中的平均事务响应时间，后面括号中的 mean 表示这是一个平均值
+Time per request:       9.208 [ms] (mean, across all concurrent requests)   #每一请求时间(并发平均)  //每个请求实际运行时间的平均值
+Transfer rate:          8771.39 [Kbytes/sec] received    #传输速率//平均每秒网络上的流量，可以帮助排除是否存在网络流量过大导致响应时间延长的问题
+Percentage of the requests served within a certain time (ms)
+  50%   2680
+  66%   2806
+  75%   2889
+  80%   2996
+  90%  11064
+  95%  20161
+  98%  21092
+  99%  21417
+ 100%  21483 (longest request)
+//整个场景中所有请求的响应情况。在场景中每个请求都有一个响应时间，其中50％的用户响应时间小于2680毫秒，60％ 的用户响应时间小于2806毫秒，最大的响应时间小于21417毫秒
+由于对于并发请求，cpu实际上并不是同时处理的，而是按照每个请求获得的时间片逐个轮转处理的，所以基本上第一个Time per request时间约等于第二个Time per request时间乘以并发请求数。
+
+Connection Times (ms)    #连接时间
+             min  mean[+/-sd] median   max
+Connect(#连接):        0    0   2.1      0      46
+Processing(#处理):    31  458  94.7    438    1078
+Waiting(#等待):       15  437  87.5    422     938
+Total:         31  458  94.7    438    1078
+
+//这几行组成的表格主要是针对响应时间也就是第一个Time per request进行细分和统计。一个请求的响应时间可以分成网络链接（Connect），系统处理（Processing）和等待（Waiting）三个部分。表中min表示最小值； mean表示平均值；[+/-sd]表示标准差（Standard Deviation） ，也称均方差（mean square error），这个概念在中学的数学课上学过，表示数据的离散程度，数值越大表示数据越分散，系统响应时间越不稳定。 median表示中位数； max当然就是表示最大值了。
+
+//需要注意的是表中的Total并不等于前三行数据相加，因为前三行的数据并不是在同一个请求中采集到的，可能某个请求的网络延迟最短，但是系统处理时间又是最长的呢。所以Total是从整个请求所需要的时间的角度来统计的。这里可以看到最慢的一个请求花费了1078ms，这个数据可以在下面的表中得到验证。
