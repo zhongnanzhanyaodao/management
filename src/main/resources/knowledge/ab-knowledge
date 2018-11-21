@@ -6,7 +6,9 @@ yum -y install httpd-tools
 
 
 
-参考地址：https://blog.csdn.net/qq_16399991/article/details/56676780
+参考地址：
+https://blog.csdn.net/qq_16399991/article/details/56676780
+https://www.cnblogs.com/gumuzi/p/5617232.html
 
 
 ab -n 全部请求数 -c 并发数 测试url
